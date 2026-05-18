@@ -1,4 +1,5 @@
 import json
+import os
 import logging
 from typing import Dict, List, Any
 from smolagents.tools import tool
@@ -52,8 +53,73 @@ class PersistentDocumentationAgent(BaseAgent):
         
         # Database tools will be integrated automatically by BaseAgent
         # No need to manually add them here
-    
     def process_table_documentation(self, table_name: str):
+        """Process and index documentation for a single table."""
+        logger.info(f"Processing table: {table_name}")
+        
+        try:
+            # Get schema directly - no LLM needed for this step
+            schema_data = self.db_inspector.get_table_schema(table_name)
+            
+            # Generate business purpose with a simple direct LLM call
+            column_names = [col['name'] for col in schema_data.get('columns', [])]
+            columns_str = ', '.join(column_names[:20])  # limit to 20 columns
+            
+            prompt = f"In one sentence, what is the business purpose of a database table named '{table_name}' with columns: {columns_str}?"
+            
+            # business_purpose = self.llm_model.generate(
+            #     [{"role": "user", "content": prompt}]
+            # )
+            
+            # # Handle different return types from smolagents
+            # if hasattr(business_purpose, 'content'):
+            #     business_purpose = business_purpose.content
+            # if isinstance(business_purpose, list):
+            #     business_purpose = business_purpose[0].get('text', str(business_purpose))
+            # business_purpose = str(business_purpose).strip()
+            import openai
+            client = openai.OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY"),
+                base_url=os.getenv("OPENAI_API_BASE")
+            )
+            response = client.chat.completions.create(
+                model=os.getenv("GROQ_MODEL", "llama-3.1-8b-instant"),
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=150
+            )
+            business_purpose = response.choices[0].message.content.strip()            
+
+            
+            documentation = f"## {table_name}\n\n{business_purpose}"
+            
+            # Save to documentation store
+            self.store.save_table_documentation(
+                table_name, schema_data, business_purpose, documentation
+            )
+            
+            # Index with vector store if available
+            if self.vector_indexing_available and self.indexer_agent:
+                try:
+                    table_doc = {
+                        "name": table_name,
+                        "business_purpose": business_purpose,
+                        "schema": schema_data,
+                        "type": "table",
+                        "description": business_purpose,
+                        "columns": [col['name'] for col in schema_data.get('columns', [])]
+                    }
+                    self.indexer_agent.vector_store.add_table_document(
+                        table_name, table_doc
+                    )
+                except Exception as e:
+                    logger.error(f"Vector indexing failed for table {table_name}: {e}")
+            
+            logger.info(f"Completed processing table: {table_name}")
+            
+        except Exception as e:
+            logger.error(f"Failed to process table {table_name}: {e}")
+            raise
+    def process_table_documentation2(self, table_name: str):
         """Process and index documentation for a single table."""
         logger.info(f"Processing table: {table_name}")
         
@@ -127,10 +193,71 @@ class PersistentDocumentationAgent(BaseAgent):
         except Exception as e:
             logger.error(f"Failed to process table {table_name}: {e}")
             raise
-    
+
     def process_relationship_documentation(self, relationship: dict):
         """Process and index documentation for a single relationship."""
-        rel_id = relationship['id']
+        
+        # Build a clean ID from the relationship fields
+        constrained_table = relationship.get('constrained_table', '')
+        referred_table = relationship.get('referred_table', '')
+        rel_id = f"{constrained_table}_{referred_table}"
+        
+        logger.info(f"Processing relationship: {rel_id}")
+        
+        try:
+            import openai
+            client = openai.OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY"),
+                base_url=os.getenv("OPENAI_API_BASE")
+            )
+            
+            prompt = f"In one sentence, describe the relationship between database tables '{constrained_table}' and '{referred_table}' where {constrained_table}.{relationship.get('constrained_columns')} references {referred_table}.{relationship.get('referred_columns')}. Also state if it is one-to-one, one-to-many, or many-to-many."
+            
+            response = client.chat.completions.create(
+                model=os.getenv("GROQ_MODEL", "llama-3.1-8b-instant"),
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=150
+            )
+            documentation = response.choices[0].message.content.strip()
+            relationship_type = "one-to-many"  # safe default
+            
+            # Simple inference from response text
+            if "one-to-one" in documentation.lower():
+                relationship_type = "one-to-one"
+            elif "many-to-many" in documentation.lower():
+                relationship_type = "many-to-many"
+            
+            # Save to documentation store
+            self.store.save_relationship_documentation(
+                rel_id, relationship_type, documentation
+            )
+            
+            # Index with vector store if available
+            if self.vector_indexing_available and self.indexer_agent:
+                try:
+                    rel_data = {
+                        "name": rel_id,
+                        "type": relationship_type,
+                        "documentation": documentation,
+                        "tables": [constrained_table, referred_table],
+                        "doc_type": "relationship"
+                    }
+                    self.indexer_agent.vector_store.add_relationship_document(
+                        rel_id, rel_data
+                    )
+                except Exception as e:
+                    logger.error(f"Vector indexing failed for relationship {rel_id}: {e}")
+            
+            logger.info(f"Completed processing relationship: {rel_id}")
+            
+        except Exception as e:
+            logger.error(f"Failed to process relationship {rel_id}: {e}")
+            raise
+
+    def process_relationship_documentation2(self, relationship: dict):
+        """Process and index documentation for a single relationship."""
+        #rel_id = relationship['id']
+        rel_id = f"{relationship.get('constrained_table')}_{relationship.get('referred_table')}"
         logger.info(f"Processing relationship: {rel_id}")
         
         prompt = f"""
@@ -315,3 +442,33 @@ class PersistentDocumentationAgent(BaseAgent):
             self.indexer_agent = None
             self.vector_indexing_available = False
             return False
+    def build_database_knowledge_base(self):
+        """Process all database tables and relationships."""
+
+        logger.info("Starting database knowledge base build...")
+
+        # Get all tables
+        tables = self.db_inspector.get_all_tables()
+
+        logger.info(f"Found {len(tables)} tables")
+
+        # Process tables
+        for table_name in tables:
+            try:
+                self.process_table_documentation(table_name)
+            except Exception as e:
+                logger.error(f"Failed processing table {table_name}: {e}")
+
+        # Get relationships
+        relationships = self.db_inspector.get_all_relationships()
+
+        logger.info(f"Found {len(relationships)} relationships")
+
+        # Process relationships
+        for relationship in relationships:
+            try:
+                self.process_relationship_documentation(relationship)
+            except Exception as e:
+                logger.error(f"Failed processing relationship: {e}")
+
+        logger.info("Knowledge base build completed")    

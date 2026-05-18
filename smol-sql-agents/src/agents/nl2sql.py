@@ -30,7 +30,28 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             agent_name="NL2SQL Agent",
             database_tools=self.database_tools
         )
-    
+
+    def _get_schema_depth(self, user_query: str) -> int:
+        """Determine how many table schemas to fetch based on query complexity."""
+        query_lower = user_query.lower()
+        
+        # Signals of increasing complexity
+        join_signals = ['join', 'together with', 'related', 'linked', 'combined', 
+                        'and their', 'with their', 'along with', 'including their']
+        multi_signals = ['compare', 'versus', 'vs', 'difference between', 'both']
+        aggregate_signals = ['per', 'each', 'breakdown', 'distribution across', 'group by']
+        
+        score = 2  # default top 2
+        
+        if any(word in query_lower for word in join_signals):
+            score += 1
+        if any(word in query_lower for word in multi_signals):
+            score += 1
+        if any(word in query_lower for word in aggregate_signals):
+            score += 1
+        
+        return min(score, 4)  # cap at 4    
+
     def _setup_agent_components(self):
         """Setup agent-specific components."""
         self.business_validator = BusinessValidator()
@@ -231,6 +252,62 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
     
     def _build_query_prompt(self, user_query: str, business_context: Dict, entity_context: Dict) -> str:
         """Build query prompt."""
+        business_instructions = business_context.get("business_instructions", [])
+        
+        # Get top 2 entities and fetch their schemas efficiently
+        entities = entity_context.get("entities", [])
+        schema_info = "No schema information available"
+        
+        if entities:
+            schema_parts = []
+            # depth = self._get_schema_depth(user_query) ----->the scaling of tables
+            # print(f"DEBUG schema depth: {depth} for query: {user_query}", flush=True)
+            # for top_entity in entities[:depth]:
+            for top_entity in entities[:2]:  # top 2 entities
+                try:
+                    schema_result = self.database_tools.get_table_schema_unified(top_entity)
+                    columns = [col['name'] for col in schema_result.get('columns', [])]
+                    schema_parts.append(f"{top_entity} columns: {', '.join(columns)}")
+                except Exception as e:
+                    logger.error(f"Failed to fetch schema for {top_entity}: {e}")
+            schema_info = "\n".join(schema_parts) if schema_parts else "No schema information available"
+        
+        business_context_str = ""
+        if business_instructions:
+            business_context_str = "Business context:\n"
+            for instruction in business_instructions[:3]:
+                business_context_str += f"- {instruction.get('instructions', '')}\n"
+        
+        return f"""
+            Generate Oracle SQL for the following request: {user_query}
+            
+            Most relevant table schemas:
+            {schema_info}
+            
+            {business_context_str}
+            
+            Instructions:
+            0. For simple queries write SQL directly using the schema above
+            1. Generate the Oracle SQL query and call final_answer() with it as a string
+            2. The database is Oracle - use Oracle syntax only
+            3. ALWAYS use final_answer("your sql here") - never write raw SQL outside final_answer()
+            4. Never use ```sql code blocks - write plain Python only
+  
+
+
+            IMPORTANT Oracle SQL rules:
+            - Use FETCH FIRST N ROWS ONLY instead of TOP N, when asked.
+            - Use SYSDATE instead of NOW() or GETDATE(), when asked.
+            - Don't use ISNULL(), unless asked.
+            - SYSDATE has no parentheses, never write SYSDATE()
+            - Never add WHERE conditions not explicitly asked for by the user
+            """
+
+
+    def _build_query_prompt2(self, user_query: str, business_context: Dict, entity_context: Dict) -> str:
+        print(f"DEBUG entity_context keys: {entity_context.keys()}", flush=True)
+        print(f"DEBUG entity_context: {entity_context}", flush=True)
+        """Build query prompt."""
         schema_info = self._format_schema_info(entity_context.get("table_schemas", {}))
         business_instructions = business_context.get("business_instructions", [])
         
@@ -241,7 +318,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                 business_context_str += f"- {instruction.get('instructions', '')}\n"
         
         return f"""
-        Generate T-SQL for the following request: {user_query}
+        Generate Oracle SQL for the following request: {user_query}
         
         Available schema information:
         {schema_info}
@@ -249,11 +326,25 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         {business_context_str}
         
         Instructions:
-        1. Use get_table_schema_unified_tool() to verify column names and table structure
-        2. Test your query using execute_query_and_return_results() 
-        3. Return the final SQL using final_answer()
-        
-        Generate clean, efficient T-SQL that answers the user's request.
+        1. For simple queries, write the SQL directly without checking tables first
+        2. The database is Oracle - use Oracle syntax only
+        3. To get table list if needed: tables = get_all_tables_unified_tool()['tables']
+        4. Test using execute_query_and_return_results(query_string)
+        5. Call final_answer(sql_query_string) with ONLY the SQL string
+
+        Examples:
+        - final_answer("SELECT COUNT(*) FROM address")
+        - final_answer("SELECT table_name FROM all_tables")
+        - final_answer("SELECT * FROM address FETCH FIRST 10 ROWS ONLY")
+
+        IMPORTANT Oracle SQL rules:
+        - Use ALL_TABLES or USER_TABLES instead of INFORMATION_SCHEMA
+        - Use FETCH FIRST N ROWS ONLY instead of TOP N
+        - Use SYSDATE instead of NOW() or GETDATE()
+        - Use TRUNC(date) for date-only comparisons
+        - Never use square brackets for column names
+        - Use NVL() instead of ISNULL()
+        - For COUNT queries, just write SELECT COUNT(*) FROM tablename directly
         """
     
     def _format_schema_info(self, table_schemas: Dict) -> str:
@@ -283,28 +374,27 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                 return response['sql']
             elif 'query' in response:
                 return response['query']
+            elif 'error' in response:
+                logger.error(f"Agent returned error: {response['error']}")
+                return None
         
         if isinstance(response, str):
-            # Extract SQL from code blocks
             import re
             sql_pattern = r'```sql\s*(.*?)\s*```'
             match = re.search(sql_pattern, response, re.DOTALL)
             if match:
                 return match.group(1).strip()
             
-            # Look for final_answer in response
             final_answer_pattern = r'final_answer\s*\(\s*["\']([^"\']*)["\']'
             match = re.search(final_answer_pattern, response)
             if match:
                 return match.group(1).strip()
             
-            # Look for get_accurate_schema in response (legacy support)
             get_accurate_schema_pattern = r'get_accurate_schema\s*\(\s*["\']([^"\']*)["\']'
             match = re.search(get_accurate_schema_pattern, response)
             if match:
                 return match.group(1).strip()
             
-            # Fallback: extract SQL-like content
             lines = response.split('\n')
             sql_lines = []
             for line in lines:
@@ -316,8 +406,19 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         
         logger.warning(f"Could not extract SQL from response: {type(response)} - {response}")
         return None
-    
+
     def _check_business_compliance(self, query: str, business_context: Dict) -> Dict:
+        matched_concepts = business_context.get("matched_concepts", [])
+        # If no concepts defined, always pass compliance
+        if not matched_concepts:
+            return {"valid": True, "message": "No concepts defined, compliance check skipped"}
+        try:
+            return self.business_validator.validate_against_concepts(query, matched_concepts)
+        except Exception as e:
+            logger.error(f"Business compliance check failed: {e}")
+            return {"valid": True, "error": str(e)}
+
+    def _check_business_compliance2(self, query: str, business_context: Dict) -> Dict:
         """Check business compliance of query."""
         matched_concepts = business_context.get("matched_concepts", [])
         try:
@@ -398,3 +499,29 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             }
         except Exception as e:
             return {"success": False, "error": str(e)}
+        
+
+
+
+            #     return f"""
+            # Generate Oracle SQL for the following request: {user_query}
+            
+            # Most relevant table schemas:
+            # {schema_info}
+            
+            # {business_context_str}
+            
+            # Instructions:
+            # 1. For simple queries write SQL directly using the schema above
+            # 2. The database is Oracle - use Oracle syntax only
+            # 3. Call final_answer(sql_query_string) with ONLY the SQL string
+            # 4. Always wrap code in python code blocks, never sql code blocks
+            
+            # Examples:
+            #         Correct format:
+            #         final_answer("SELECT COUNT(*) FROM address WHERE status = 'Actual'")
+        
+            #         Wrong format:
+            #         ```sql
+            #                 final_answer(...)
+            #         ```

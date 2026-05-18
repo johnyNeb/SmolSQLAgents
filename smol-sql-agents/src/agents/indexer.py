@@ -17,63 +17,69 @@ class SQLIndexerAgent:
     """Streamlined vector indexing agent with consistent dictionary returns."""
     
     def __init__(self, vector_store: SQLVectorStore, shared_llm_model=None):
-        self.vector_store = vector_store
-        self.embeddings_client = vector_store.embeddings_client
+            self.vector_store = vector_store
+            self.embeddings_client = vector_store.embeddings_client
+            
+            # Use shared LLM model if provided
+            if shared_llm_model:
+                self.llm_model = shared_llm_model
+            else:
+                api_key = os.getenv("OPENAI_API_KEY")
+                if not api_key:
+                    raise ValueError("OPENAI_API_KEY environment variable is not set")
+                api_base = os.getenv("OPENAI_API_BASE")
+                model_id = os.getenv("GROQ_MODEL", "gpt-4o-mini")
+                self.llm_model = OpenAIModel(
+                    model_id=model_id,
+                    api_key=api_key,
+                    api_base=api_base
+                )
         
-        # Use shared LLM model if provided
-        if shared_llm_model:
-            self.llm_model = shared_llm_model
-        else:
-            api_key = os.getenv("OPENAI_API_KEY")
-            if not api_key:
-                raise ValueError("OPENAI_API_KEY environment variable is not set")
-            self.llm_model = OpenAIModel(model_id="gpt-4o-mini", api_key=api_key)
-        
-        # Initialize vector indexes
-        try:
-            self.vector_store.create_table_index()
-            self.vector_store.create_relationship_index()
-        except Exception as e:
-            logger.error(f"Failed to initialize vector indexes: {e}")
-            raise
-        
-        # Create tools
-        self._setup_tools()
-        
-        # Initialize CodeAgent
-        self.agent = CodeAgent(
-            model=self.llm_model,
-            tools=self.tools,
-            additional_authorized_imports=['json']
-        )
-        
-        logger.info("SQL indexer agent initialized")
+            # Initialize vector indexes
+            try:
+                self.vector_store.create_table_index()
+                self.vector_store.create_relationship_index()
+            except Exception as e:
+                logger.error(f"Failed to initialize vector indexes: {e}")
+                raise
+            
+            # Create tools
+            self._setup_tools()
+            
+            # Initialize CodeAgent
+            self.agent = CodeAgent(
+                model=self.llm_model,
+                tools=self.tools,
+                additional_authorized_imports=['json']
+            )
+            
+            logger.info("SQL indexer agent initialized")
     
     def _setup_tools(self):
         """Setup essential indexing tools."""
         
         @tool
-        def index_table_documentation(table_data: Dict) -> Dict:
+        def index_table_documentation(table_documentation_data: Dict) -> Dict:
             """Index table documentation with OpenAI embeddings.
             
             Args:
-                table_data: Dictionary containing table documentation data including name, business_purpose, schema, and type.
+                table_documentation_data: Dictionary containing table documentation data including name, business_purpose, schema, and type.
                 
             Returns:
                 Dictionary with success status and result information.
             """
             try:
-                if not self._validate_table_data(table_data):
+                if not self._validate_table_data(table_documentation_data):
                     return {
                         "success": False,
                         "error": "Invalid table documentation format"
                     }
                 
-                table_name = table_data.get("name")
+                table_name = table_documentation_data.get("name")
                 if not table_name:
                     return {"success": False, "error": "Table name is required"}
                 
-                self.vector_store.add_table_document(table_name, table_data)
+                self.vector_store.add_table_document(table_name, table_documentation_data)
                 
                 return {
                     "success": True,

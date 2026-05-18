@@ -156,13 +156,18 @@ class DatabaseTools:
             from sqlalchemy import text
             with self.database_inspector.engine.connect() as connection:
                 # Add row limiting for safety
-                if "TOP" not in query.upper() and "SELECT" in query.upper():
-                    # For SQL Server, add TOP clause
-                    select_index = query.upper().find("SELECT")
-                    if select_index != -1:
-                        after_select = query[select_index + 6:].lstrip()
-                        query = query[:select_index + 6] + f" TOP {max_rows} " + after_select
-                
+                # if "TOP" not in query.upper() and "SELECT" in query.upper():
+                #     # For SQL Server, add TOP clause
+                #     select_index = query.upper().find("SELECT")
+                #     if select_index != -1:
+                #         after_select = query[select_index + 6:].lstrip()
+                #         query = query[:select_index + 6] + f" TOP {max_rows} " + after_select
+                # Add row limiting for safety (Oracle syntax)
+                if "FETCH FIRST" not in query.upper() and "ROWNUM" not in query.upper() and "SELECT" in query.upper():
+                    # Skip adding limit for aggregate queries like COUNT(*)
+                    if "COUNT(" not in query.upper():
+                        query = query + f" FETCH FIRST {max_rows} ROWS ONLY"
+                query = query.strip().rstrip(';')
                 result = connection.execute(text(query))
                 rows = result.fetchall()
                 columns = result.keys()

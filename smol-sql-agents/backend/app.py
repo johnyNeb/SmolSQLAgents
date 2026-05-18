@@ -412,6 +412,11 @@ class ApiRoutes:
                 })
 
             main_agent = agent_manager.get_main_agent()
+            try:
+                logger.info("Starting database indexing...")
+                main_agent.build_database_knowledge_base()
+            except Exception as e:
+                logger.error(f"Indexing failed: {e}")            
             indexer_agent = agent_manager.get_indexer_agent()
 
             if (main_agent and indexer_agent and

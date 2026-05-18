@@ -55,12 +55,20 @@ class BaseAgent(ABC):
         logger.info(f"{self.agent_name} initialized")
     
     def _initialize_llm_model(self):
-        """Initialize OpenAI model for the agent."""
+        """Initialize LLM model from environment variables."""
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
             raise ValueError("OPENAI_API_KEY environment variable is not set")
         
-        self.llm_model = OpenAIModel(model_id="gpt-4o-mini", api_key=api_key)
+        api_base = os.getenv("OPENAI_API_BASE")
+        model_id = os.getenv("GROQ_MODEL", "gpt-4o-mini")
+        
+        self.llm_model = OpenAIModel(
+            model_id=model_id,
+            api_key=api_key,
+            api_base=api_base
+        )
+        logger.info(f"LLM model initialized: {model_id} via {api_base}")
     
     def _validate_tools(self):
         """Validate that all tools are properly decorated."""

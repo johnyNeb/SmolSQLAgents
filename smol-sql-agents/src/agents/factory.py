@@ -39,8 +39,15 @@ class AgentFactory:
             if not api_key:
                 raise ValueError("OPENAI_API_KEY environment variable is not set")
             
-            self._shared_llm_model = OpenAIModel(model_id="gpt-4o-mini", api_key=api_key)
-            logger.info("Shared LLM model created")
+            base_url = os.getenv("OPENAI_API_BASE")
+            model_id = os.getenv("GROQ_MODEL", "gpt-4o-mini")
+            
+            self._shared_llm_model = OpenAIModel(
+                model_id=model_id,
+                api_key=api_key,
+                api_base=base_url
+            )
+            logger.info(f"Shared LLM model created: {model_id} via {base_url}")
         
         return self._shared_llm_model
     
@@ -56,7 +63,9 @@ class AgentFactory:
     def get_main_agent(self) -> PersistentDocumentationAgent:
         """Get or create main documentation agent."""
         if "main_agent" not in self._instances:
-            self._instances["main_agent"] = PersistentDocumentationAgent()
+            self._instances["main_agent"] = PersistentDocumentationAgent(
+            shared_llm_model=self.get_shared_llm_model()
+        )
             logger.info("Main agent created")
         
         return self._instances["main_agent"]
@@ -172,7 +181,59 @@ class AgentFactory:
             "business_agent": self.get_business_agent(),
             "batch_manager": self.get_batch_manager()
         }
-    
+    def initialize(self):
+        """Initialize and warm up all agents and indexes."""
+
+        logger.info("Initializing agent ecosystem...")
+
+        # Force creation of core agents
+        main_agent = self.get_main_agent()
+        self.get_indexer_agent()
+        self.get_entity_agent()
+        self.get_business_agent()
+        self.get_nl2sql_agent()
+        self.get_sql_pipeline()
+
+        logger.info("All agents created")
+
+        # Build database knowledge base
+        try:
+            logger.info("Building database knowledge base...")
+
+            tables = main_agent.db_inspector.get_all_table_names()
+
+            logger.info(f"Found {len(tables)} tables")
+
+            for i, table_name in enumerate(tables):
+                try:
+                        # Skip if already indexed in ChromaDB
+                        existing = main_agent.indexer_agent.vector_store.search_tables(table_name)
+                        if existing and len(existing) > 0:
+                            print(f"⏭️ Skipping {table_name} (already indexed)", flush=True)
+                            continue
+                            
+                        print(f"Processing table {i+1}/{len(tables)}: {table_name}", flush=True)
+                        main_agent.process_table_documentation(table_name)
+                        print(f"✅ Done: {table_name}", flush=True)
+                except Exception as e:
+                        print(f"❌ Failed: {table_name}: {e}", flush=True)
+
+            relationships = main_agent.db_inspector.get_all_foreign_key_relationships()
+
+            logger.info(f"Found {len(relationships)} relationships")
+
+            for relationship in relationships:
+                try:
+                    main_agent.process_relationship_documentation(relationship)
+                except Exception as e:
+                    logger.error(f"Failed processing relationship: {e}")
+
+            logger.info("Knowledge base build complete")
+
+        except Exception as e:
+            logger.error(f"Initialization indexing failed: {e}")
+
+        return self
     def reset(self):
         """Reset all instances (useful for testing)."""
         self._instances.clear()

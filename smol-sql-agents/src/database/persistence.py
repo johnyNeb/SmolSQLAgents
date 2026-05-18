@@ -13,7 +13,7 @@ class DocumentationStore:
     def __init__(self, db_path: str = "__bin__/data/documentation.db"):
         """Initialize the documentation store."""
         self.db_path = Path(db_path)
-        self.db_path.parent.mkdir(exist_ok=True)
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self._init_database()
         logger.info(f"Documentation store initialized at {db_path}")
     
