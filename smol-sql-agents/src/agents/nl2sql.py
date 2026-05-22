@@ -265,7 +265,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                         
                         result["model_used"] = model_name
                         return result
-                    # if result.get("query_execution", {}).get("success"):
+                    # if result.get("query_execution", {}).get("success"):     #
                     #     print(f"✅ Success with {model_name}", flush=True)
                     #     result["model_used"] = model_name
                     #     return result                    
