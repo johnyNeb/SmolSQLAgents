@@ -1,5 +1,6 @@
 import logging
 import concurrent.futures
+import os
 from typing import Dict, List, Optional, Any
 
 # Import smolagents tools
@@ -125,8 +126,286 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             execute_query_and_return_results,
             final_answer
         ])
-    
+
+    def _route_query(self, user_query: str) -> str:
+        query_lower = user_query.lower()
+        
+        # Explicit discovery — user is asking about the schema itself
+        explicit_discovery = [
+            'what tables', 'which tables', 'describe', 'explain',
+            'what is the relationship', 'how are', 'tell me about',
+            'what does', 'summarize', 'analyze the schema',
+            'what columns', 'show me the structure', 'list all tables',
+            'what data', 'what information'
+        ]
+        
+        # Implicit discovery — business concept with no obvious table anchor
+        # These need the agent to figure out WHICH table to use
+        implicit_discovery = [
+            'related records in', 'linked to', 'connected to',
+            'find all tables', 'how they connect', 'data lineage',
+            'staging history', 'trace', 'track'
+        ]
+        
+        if any(signal in query_lower for signal in explicit_discovery):
+            return "agent"
+        
+        if any(signal in query_lower for signal in implicit_discovery):
+            return "agent"
+        
+        return "direct"
+
+    def _build_discovery_prompt(self, user_query: str, entity_context: Dict) -> str:
+        entities = entity_context.get("entities", [])
+        entity_list = ", ".join(entities) if entities else "not yet identified"
+
+        return f"""
+        The user is asking a discovery question about the database:
+        "{user_query}"
+
+        Semantic search identified these tables as potentially relevant: {entity_list}
+
+        Your job is to answer the question in plain English. Do NOT generate SQL.
+
+        You can use these tools to investigate:
+        - get_all_tables_unified_tool() — returns a dict, use result["tables"] to get the list
+        - get_table_schema_unified_tool("table_name") — returns columns for a specific table
+
+        Based on what you find, call final_answer("your plain English answer here").
+
+        Example answer format:
+        final_answer("The tables that contain duplicate address information are: dup_addresses (stores entity identities of duplicates), dups_paid_fullmatch_key (tracks duplicates by full match key for paid addresses), dups_paid_leading (identifies the leading record among duplicates).")
+        """
+
+    def _extract_discovery_answer(self, response) -> str:
+        """Extract plain text answer from discovery response."""
+        if isinstance(response, dict):
+            return response.get("final_sql", response.get("answer", str(response)))
+        if isinstance(response, str):
+            import re
+            # Try to extract from final_answer() call
+            match = re.search(r'final_answer\s*\(\s*["\'](.+?)["\']\s*\)', response, re.DOTALL)
+            if match:
+                return match.group(1).strip()
+            return response.strip()
+        return str(response)    
+
     def generate_sql_optimized(self, user_query: str, business_context: Dict, entity_context: Dict) -> Dict[str, Any]:
+        """Direct SQL generation bypassing CodeAgent, with agent fallback for discovery queries."""
+        import openai
+    
+        # Route discovery queries to CodeAgent
+        route = self._route_query(user_query)
+        if route == "agent":
+                    print(f"🔍 Routing to CodeAgent for discovery query", flush=True)
+                    prompt = self._build_discovery_prompt(user_query, entity_context)
+                    response = self.agent.run(prompt)
+                    answer = self._extract_discovery_answer(response)
+                    return {
+                        "success": True,
+                        "generated_sql": "",
+                        "answer": answer,
+                        "is_discovery": True,
+                        "query_execution": {"success": True, "total_rows": 0}
+                    }
+    
+        print(f"⚡ Routing to direct Groq call for SQL query", flush=True)
+        logger.info(f"Starting direct SQL generation for: {user_query}")
+        
+        try:
+            # Build prompt
+            prompt = self._build_query_prompt(user_query, business_context, entity_context)
+            
+            models_to_try = self._choose_model_order(user_query)
+            
+            for model_name in models_to_try:
+                print(f"Trying model: {model_name}", flush=True)
+                
+                try:
+                    client = openai.OpenAI(
+                        api_key=os.getenv("OPENAI_API_KEY"),
+                        base_url=os.getenv("OPENAI_API_BASE")
+                    )
+                    
+                    response = client.chat.completions.create(
+                        model=model_name,
+                        messages=[{"role": "user", "content": prompt}],
+                        max_tokens=500
+                    )
+                    
+                    generated_sql = response.choices[0].message.content.strip()
+                    
+                    # Clean up — remove any markdown or final_answer() wrapper if model adds it
+                    generated_sql = self._clean_sql(generated_sql)
+                    
+                    if not generated_sql:
+                        print(f"⚠️ {model_name} returned empty SQL", flush=True)
+                        continue
+                    
+                    print(f"Generated SQL: {generated_sql}", flush=True)
+                    
+                    # Execute and validate
+                    result = self._execute_parallel_validation(generated_sql, business_context)
+                    
+                    if result.get("query_execution", {}).get("success"):
+                        print(f"✅ Success with {model_name}", flush=True)
+                        
+                        # Option A: ask versatile to judge if instant was used
+                        if model_name == os.getenv("GROQ_MODEL_FAST", "llama-3.1-8b-instant"):
+                            judged = self._judge_and_maybe_fix(
+                                user_query,
+                                generated_sql,
+                                result.get("query_execution", {}),
+                                business_context
+                            )
+                            if judged:
+                                print(f"🔧 Judge replaced instant's SQL", flush=True)
+                                judged["model_used"] = model_name + "_judged"
+                                return judged
+                        
+                        result["model_used"] = model_name
+                        return result
+                    # if result.get("query_execution", {}).get("success"):
+                    #     print(f"✅ Success with {model_name}", flush=True)
+                    #     result["model_used"] = model_name
+                    #     return result                    
+                    else:
+                        error = result.get("query_execution", {}).get("error", "")
+                        print(f"⚠️ {model_name} SQL failed: {error}", flush=True)
+                        
+                        # Retry with versatile if fast model failed
+                        if model_name == os.getenv("GROQ_MODEL_FAST", "llama-3.1-8b-instant"):
+                            continue  # will try next model in loop
+                            
+                except Exception as e:
+                    print(f"❌ {model_name} error: {e}", flush=True)
+                    continue
+            
+            return {
+                "success": False,
+                "error": "All models failed to generate valid SQL",
+                "generated_sql": "",
+                "is_valid": False
+            }
+            
+        except Exception as e:
+            logger.error(f"SQL generation failed: {e}")
+            return {
+                "success": False,
+                "error": str(e),
+                "generated_sql": "",
+                "is_valid": False
+            }
+
+    def _clean_sql(self, text: str) -> str:
+        """Extract clean SQL from LLM response."""
+        import re
+        
+        # Remove markdown code blocks
+        text = re.sub(r'```sql\s*', '', text)
+        text = re.sub(r'```python\s*', '', text)
+        text = re.sub(r'```\s*', '', text)
+        
+        # Remove final_answer() wrapper if model still adds it
+        match = re.search(r'final_answer\s*\(\s*["\'](.+?)["\']\s*\)', text, re.DOTALL)
+        if match:
+            return match.group(1).strip()
+        
+        # Remove explanation text — keep only SQL
+        lines = text.strip().split('\n')
+        sql_lines = []
+        in_sql = False
+        for line in lines:
+            upper = line.upper().strip()
+            if any(upper.startswith(kw) for kw in ['SELECT', 'WITH', 'INSERT', 'UPDATE', 'DELETE']):
+                in_sql = True
+            if in_sql:
+                sql_lines.append(line)
+        
+        if sql_lines:
+            return '\n'.join(sql_lines).strip().rstrip(';')
+        
+        return text.strip().rstrip(';')
+
+
+    
+    def generate_sql_optimized3(self, user_query: str, business_context: Dict, entity_context: Dict) -> Dict[str, Any]:
+        logger.info(f"Starting SQL generation for query: {user_query}")
+
+        try:
+            prompt = self._build_query_prompt(user_query, business_context, entity_context)
+
+            models_to_try = self._choose_model_order(user_query)
+            attempts = []
+
+            for model_name in models_to_try:
+                logger.info(f"Trying model: {model_name}")
+                attempts.append(model_name)
+
+                try:
+                    response = self._run_with_model(model_name, prompt)
+                    generated_sql = self._extract_sql_from_response(response)
+
+                    if not generated_sql:
+                        continue
+
+                    logger.info(f"Generated SQL with {model_name}: {generated_sql[:100]}")
+
+                    result = self._execute_parallel_validation(generated_sql, business_context)
+
+                    if result.get("query_execution", {}).get("success"):
+                        result["model_used"] = model_name
+                        result["attempts"] = attempts
+                        return result
+
+                    # ✅ retry fix (only for fast model)
+                    # ✅ retry with better model, up to 3 attempts
+                    if "8b" in model_name:
+                            slow_model = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
+                            for retry_attempt in range(3):
+                                print(f"🔄 Retry {retry_attempt + 1}/3 with {slow_model}", flush=True)
+                                retry_result = self._retry_sql_fix(
+                                    generated_sql,
+                                    result.get("query_execution", {}).get("error", ""),
+                                    business_context,
+                                    slow_model  # ← use slow model for retry
+                                )
+                                if retry_result.get("query_execution", {}).get("success"):
+                                    retry_result["model_used"] = slow_model + f"_retry_{retry_attempt + 1}"
+                                    retry_result["attempts"] = attempts
+                                    print(f"✅ Retry {retry_attempt + 1} succeeded with {slow_model}", flush=True)
+                                    return retry_result
+                                else:
+                                    # Update SQL for next retry with the latest failure
+                                    generated_sql = retry_result.get("generated_sql", generated_sql)
+                                    error = retry_result.get("query_execution", {}).get("error", "")
+                                    print(f"❌ Retry {retry_attempt + 1} failed, trying again...", flush=True)
+                            
+                            print(f"❌ All 3 retries failed with {slow_model}", flush=True)
+
+                    if retry_result.get("query_execution", {}).get("success"):
+                            retry_result["model_used"] = model_name + "_retry"
+                            retry_result["attempts"] = attempts
+                            return retry_result
+
+                except Exception as e:
+                    logger.error(f"Model {model_name} failed: {e}")
+
+            return {
+                "success": False,
+                "error": "All models failed",
+                "attempts": attempts
+            }
+
+        except Exception as e:
+            logger.error(f"SQL generation failed: {e}")
+            return {
+                "success": False,
+                "error": str(e)
+            }
+    
+    
+    def generate_sql_optimized2(self, user_query: str, business_context: Dict, entity_context: Dict) -> Dict[str, Any]:
         """Optimized SQL generation with parallel validation."""
         logger.info(f"Starting SQL generation for query: {user_query}")
         try:
@@ -250,7 +529,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             "is_valid": cached_results.get("syntax_valid", False)
         }
     
-    def _build_query_prompt(self, user_query: str, business_context: Dict, entity_context: Dict) -> str:
+    def _build_query_prompt3(self, user_query: str, business_context: Dict, entity_context: Dict) -> str:
         """Build query prompt."""
         business_instructions = business_context.get("business_instructions", [])
         
@@ -302,6 +581,51 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             - SYSDATE has no parentheses, never write SYSDATE()
             - Never add WHERE conditions not explicitly asked for by the user
             """
+    
+    def _build_query_prompt(self, user_query: str, business_context: Dict, entity_context: Dict) -> str:
+        """Build query prompt."""
+        business_instructions = business_context.get("business_instructions", [])
+        
+        # Get top 2 entities and fetch their schemas efficiently
+        entities = entity_context.get("entities", [])
+        schema_info = "No schema information available"
+        
+        if entities:
+            schema_parts = []
+            # depth = self._get_schema_depth(user_query) ----->the scaling of tables
+            # print(f"DEBUG schema depth: {depth} for query: {user_query}", flush=True)
+            # for top_entity in entities[:depth]:
+            for top_entity in entities[:2]:  # top 2 entities
+                try:
+                    schema_result = self.database_tools.get_table_schema_unified(top_entity)
+                    columns = [col['name'] for col in schema_result.get('columns', [])]
+                    schema_parts.append(f"{top_entity} columns: {', '.join(columns)}")
+                except Exception as e:
+                    logger.error(f"Failed to fetch schema for {top_entity}: {e}")
+            schema_info = "\n".join(schema_parts) if schema_parts else "No schema information available"
+        
+        business_context_str = ""
+        if business_instructions:
+            business_context_str = "Business context:\n"
+            for instruction in business_instructions[:3]:
+                business_context_str += f"- {instruction.get('instructions', '')}\n"
+        
+        return f"""
+            Generate Oracle SQL for the following request: {user_query}
+            
+            Most relevant table schemas:
+            {schema_info}
+            
+            {business_context_str}
+            
+            Return ONLY the SQL query, nothing else. No explanation, no markdown, no final_answer() wrapper.
+            
+            Oracle SQL rules:
+            - FETCH FIRST N ROWS ONLY instead of TOP N
+            - SYSDATE not SYSDATE() 
+            - Never add WHERE conditions not explicitly asked for by the user
+            - Write SQL as a single clean string
+            """    
 
 
     def _build_query_prompt2(self, user_query: str, business_context: Dict, entity_context: Dict) -> str:
@@ -502,26 +826,141 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         
 
 
-
-            #     return f"""
-            # Generate Oracle SQL for the following request: {user_query}
-            
-            # Most relevant table schemas:
-            # {schema_info}
-            
-            # {business_context_str}
-            
-            # Instructions:
-            # 1. For simple queries write SQL directly using the schema above
-            # 2. The database is Oracle - use Oracle syntax only
-            # 3. Call final_answer(sql_query_string) with ONLY the SQL string
-            # 4. Always wrap code in python code blocks, never sql code blocks
-            
-            # Examples:
-            #         Correct format:
-            #         final_answer("SELECT COUNT(*) FROM address WHERE status = 'Actual'")
+    def _choose_model_order(self, user_query: str):
+        """Decide model order based on query complexity."""
         
-            #         Wrong format:
-            #         ```sql
-            #                 final_answer(...)
-            #         ```
+        fast = os.getenv("GROQ_MODEL_FAST", "llama-3.1-8b-instant")
+        slow = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
+
+        query_lower = user_query.lower()
+
+        # simple heuristic (you already do similar logic!)
+        complex_signals = [
+            "join", "group by", "trend", "over time",
+            "aggregation", "per", "each", "distribution"
+        ]
+
+        if any(word in query_lower for word in complex_signals):
+            return [slow]  # skip small model entirely
+        
+        if len(user_query.split()) < 8:
+            return [fast, slow]
+
+        return [fast, slow]
+    
+
+    
+    def _run_with_model(self, model_name: str, prompt: str):
+        """Run prompt with a specific model using a fresh agent instance."""
+        from smolagents.models import OpenAIModel
+        from smolagents.agents import CodeAgent
+        
+        temp_model = OpenAIModel(
+            model_id=model_name,
+            api_key=os.getenv("OPENAI_API_KEY"),
+            api_base=os.getenv("OPENAI_API_BASE")
+        )
+        
+        # Create fresh agent — do NOT swap self.agent.model
+        temp_agent = CodeAgent(
+            tools=self.tools,
+            model=temp_model,
+            additional_authorized_imports=['json']
+        )
+        
+        response = temp_agent.run(prompt)
+        return response
+
+
+    def _retry_sql_fix(self, sql: str, error: str, business_context: Dict, model_name: str):
+        """Retry SQL generation with error feedback."""
+        fix_prompt = f"""
+        You are fixing an Oracle SQL query.
+        
+        Original SQL:
+        {sql}
+        
+        Error:
+        {error}
+        
+        Fix the query so it runs correctly on Oracle.
+        
+        Rules:
+        - Keep the same intent as the original query
+        - Use valid Oracle SQL syntax
+        - FETCH FIRST N ROWS ONLY instead of TOP N
+        - SYSDATE not SYSDATE()
+        - Never add WHERE conditions not in the original query
+        - Return ONLY the fixed SQL using final_answer()
+        
+        Example:
+        final_answer("SELECT * FROM address WHERE paid = 'X' FETCH FIRST 100 ROWS ONLY")
+        """
+        
+        response = self._run_with_model(model_name, fix_prompt)
+        fixed_sql = self._extract_sql_from_response(response)
+        
+        if not fixed_sql:
+            return {"success": False, "error": "Retry produced no SQL"}
+        
+        return self._execute_parallel_validation(fixed_sql, business_context)
+
+
+    def _judge_and_maybe_fix(self, user_query: str, generated_sql: str, execution_result: Dict, business_context: Dict) -> Dict[str, Any]:
+        """Ask versatile to judge if instant's SQL actually answers the question."""
+        import openai
+        
+        slow = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
+        
+        sample = execution_result.get("sample_data", {}).get("sample_rows", [])
+        sample_str = str(sample[:3]) if sample else "no rows returned"
+        
+        judge_prompt = f"""
+        Original question: "{user_query}"
+        
+        Generated SQL: {generated_sql}
+        
+        Sample results: {sample_str}
+        
+        Does this SQL fully and correctly answer the question?
+        Check: are all filters from the question present? Is the aggregation correct?
+        
+        Reply with either:
+        - CORRECT
+        - INCORRECT: <fixed SQL query only, no explanation>
+        """
+        
+        try:
+            client = openai.OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY"),
+                base_url=os.getenv("OPENAI_API_BASE")
+            )
+            
+            response = client.chat.completions.create(
+                model=slow,
+                messages=[{"role": "user", "content": judge_prompt}],
+                max_tokens=300
+            )
+            
+            verdict = response.choices[0].message.content.strip()
+            print(f"🧑‍⚖️ Judge verdict: {verdict[:80]}", flush=True)
+            
+            if verdict.upper().startswith("CORRECT"):
+                return None  # original result is fine
+            
+            # Extract fixed SQL
+            fixed_sql = verdict.replace("INCORRECT:", "").strip()
+            fixed_sql = self._clean_sql(fixed_sql)
+            
+            if not fixed_sql:
+                return None  # judge failed to produce SQL, keep original
+            
+            print(f"🔧 Judge produced fixed SQL: {fixed_sql}", flush=True)
+            return self._execute_parallel_validation(fixed_sql, business_context)
+            
+        except Exception as e:
+            print(f"⚠️ Judge failed: {e}", flush=True)
+            return None  # on any error, keep original result
+
+
+           
