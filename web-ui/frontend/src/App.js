@@ -291,7 +291,11 @@ function App() {
         // Extract SQL generation results
         const sqlGeneration = data.pipeline_results.sql_generation;
         if (sqlGeneration) {
-          setSqlValidation(sqlGeneration.validation);
+          setSqlValidation({
+            ...sqlGeneration.validation,
+            is_valid: sqlGeneration.is_valid,
+            query_execution: sqlGeneration.query_execution
+          });
           setOptimizationSuggestions(sqlGeneration.optimization_suggestions || []);
           
           // Extract query execution data from the correct location

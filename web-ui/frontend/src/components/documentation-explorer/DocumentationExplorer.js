@@ -163,7 +163,10 @@ const DocumentationExplorer = ({
   const totalRelationships = documentationData.relationships.length;
   const tablesWithDocumentation = documentationData.tables.filter(t => t.business_purpose).length;
   const relationshipsWithDocumentation = documentationData.relationships.filter(r => r.documentation).length;
-  const totalColumns = documentationData.tables.reduce((sum, table) => sum + (table.columns?.length || 0), 0);
+  const totalColumns = documentationData.tables.reduce((sum, table) => {
+    const cols = table.columns || table.schema_data?.columns || [];
+    return sum + cols.length;
+  }, 0);
 
   return (
     <div className="documentation-explorer">
@@ -239,8 +242,8 @@ const DocumentationExplorer = ({
             </div>
             <div className="col-6">
               <div className="stat-item">
-                <div className="stat-number">{totalColumns}</div>
-                <div className="stat-label">Columns</div>
+                <div className="stat-number">{totalTables + totalRelationships}</div>
+                <div className="stat-label">Schema</div>
               </div>
             </div>
             <div className="col-6">

@@ -179,4 +179,4 @@ def generate_documentation(resume: bool = False, batch_indexing: bool = True):
         logger.error(f"Documentation generation failed: {e}")
         raise
 
-generate_documentation(resume=True)
+generate_documentation(resume=True, batch_indexing=False)

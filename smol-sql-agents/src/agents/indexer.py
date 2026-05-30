@@ -232,19 +232,46 @@ class SQLIndexerAgent:
             logger.error(f"Failed to process indexing instruction: {e}")
             return {"success": False, "error": str(e)}
     
-    def index_table_documentation(self, table_data: Dict) -> bool:
-        """Index table documentation."""
-        result = self.process_indexing_instruction(
-            f"Index table documentation: {json.dumps(table_data)}"
-        )
-        return result.get("success", False)
+    # def index_table_documentation(self, table_data: Dict) -> bool:
+    #     """Index table documentation."""
+    #     result = self.process_indexing_instruction(
+    #         f"Index table documentation: {json.dumps(table_data)}"
+    #     )
+    #     return result.get("success", False)
     
+    # def index_relationship_documentation(self, relationship_data: Dict) -> bool:
+    #     """Index relationship documentation."""
+    #     result = self.process_indexing_instruction(
+    #         f"Index relationship documentation: {json.dumps(relationship_data)}"
+    #     )
+    #     return result.get("success", False)
+    def index_table_documentation(self, table_data: Dict) -> bool:
+        """Index table documentation directly without CodeAgent."""
+        try:
+            if not self._validate_table_data(table_data):
+                logger.error(f"Invalid table data format for: {table_data.get('name')}")
+                return False
+            table_name = table_data.get("name")
+            self.vector_store.add_table_document(table_name, table_data)
+            logger.info(f"Indexed table: {table_name}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to index table {table_data.get('name')}: {e}")
+            return False
+
     def index_relationship_documentation(self, relationship_data: Dict) -> bool:
-        """Index relationship documentation."""
-        result = self.process_indexing_instruction(
-            f"Index relationship documentation: {json.dumps(relationship_data)}"
-        )
-        return result.get("success", False)
+        """Index relationship documentation directly without CodeAgent."""
+        try:
+            if not self._validate_relationship_data(relationship_data):
+                logger.error(f"Invalid relationship data format")
+                return False
+            rel_id = str(relationship_data.get("id") or f"{relationship_data.get('name', 'unknown')}_rel")
+            self.vector_store.add_relationship_document(rel_id, relationship_data)
+            logger.info(f"Indexed relationship: {rel_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to index relationship: {e}")
+            return False    
     
     def search_documentation(self, query: str, doc_type: str = "all") -> Dict:
         """Search documentation using OpenAI embeddings."""

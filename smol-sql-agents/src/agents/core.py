@@ -18,6 +18,12 @@ class PersistentDocumentationAgent(BaseAgent):
     """Streamlined core documentation agent with consistent dictionary returns."""
     
     def __init__(self, shared_llm_model=None):
+        from smolagents.models import OpenAIModel
+        ollama_model = OpenAIModel( 
+            model_id="llama3.2",
+            api_key="ollama",
+            api_base="http://localhost:11434/v1"
+        )
         # Initialize agent-specific components
         self.db_inspector = DatabaseInspector()
         self.store = DocumentationStore()
@@ -35,9 +41,10 @@ class PersistentDocumentationAgent(BaseAgent):
             self.indexer_agent = None
             self.vector_indexing_available = False
         
+        
         # Initialize base agent with unified database tools
         super().__init__(
-            shared_llm_model=shared_llm_model,
+            shared_llm_model=ollama_model,
             additional_imports=['json'],
             agent_name="Core Documentation Agent",
             database_tools=self.database_tools
@@ -77,17 +84,30 @@ class PersistentDocumentationAgent(BaseAgent):
             # if isinstance(business_purpose, list):
             #     business_purpose = business_purpose[0].get('text', str(business_purpose))
             # business_purpose = str(business_purpose).strip()
+            # import openai
+            # client = openai.OpenAI(
+            #     api_key=os.getenv("OPENAI_API_KEY"),
+            #     base_url=os.getenv("OPENAI_API_BASE")
+            # )
+            # response = client.chat.completions.create(
+            #     model=os.getenv("GROQ_MODEL", "llama-3.1-8b-instant"),
+            #     messages=[{"role": "user", "content": prompt}],
+            #     max_tokens=150
+            # )
+            # business_purpose = response.choices[0].message.content.strip()     
             import openai
+            import time
             client = openai.OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY"),
-                base_url=os.getenv("OPENAI_API_BASE")
+                api_key="ollama",
+                base_url="http://localhost:11434/v1"
             )
             response = client.chat.completions.create(
-                model=os.getenv("GROQ_MODEL", "llama-3.1-8b-instant"),
+                model="llama3.2",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=150
             )
-            business_purpose = response.choices[0].message.content.strip()            
+            business_purpose = response.choices[0].message.content.strip()
+            time.sleep(0.5)  # small pause between tables to avoid overwhelming Ollama       
 
             
             documentation = f"## {table_name}\n\n{business_purpose}"
@@ -207,14 +227,14 @@ class PersistentDocumentationAgent(BaseAgent):
         try:
             import openai
             client = openai.OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY"),
-                base_url=os.getenv("OPENAI_API_BASE")
+                api_key="ollama",
+                base_url="http://localhost:11434/v1"
             )
             
             prompt = f"In one sentence, describe the relationship between database tables '{constrained_table}' and '{referred_table}' where {constrained_table}.{relationship.get('constrained_columns')} references {referred_table}.{relationship.get('referred_columns')}. Also state if it is one-to-one, one-to-many, or many-to-many."
             
             response = client.chat.completions.create(
-                model=os.getenv("GROQ_MODEL", "llama-3.1-8b-instant"),
+                model="llama3.2",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=150
             )
@@ -408,8 +428,8 @@ class PersistentDocumentationAgent(BaseAgent):
                 
                 if rel_info:
                     rel_data = {
-                        "id": rel_id,
-                        "name": rel_id,
+                        "id": str(rel_id),
+                        "name": str(rel_id),
                         "type": rel_info.get("relationship_type", ""),
                         "documentation": rel_info.get("documentation", ""),
                         "tables": [relationship.get("constrained_table"), relationship.get("referred_table")],

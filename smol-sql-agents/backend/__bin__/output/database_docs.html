@@ -1,0 +1,6079 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Knowledge Base</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .metadata { background-color: #f9f9f9; padding: 10px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Database Knowledge Base</h1>
+    
+    <div class="metadata">
+        <strong>Generated:</strong> In Progress<br>
+        <strong>Tables:</strong> 89<br>
+        <strong>Relationships:</strong> 6
+    </div>
+    
+    <h1>Tables</h1>
+    
+    <h2>USER</h2>
+    <p>The primary business purpose of this database table would be to store user data, where each row represents a unique user entity characterized by their identity (entity.Identity), display name, current status (Active/Inactive), and timestamp records for tracking creation and last modification.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>display_name</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>is_active</td>
+            <td>CHAR(1)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## USER
+
+The primary business purpose of this database table would be to store user data, where each row represents a unique user entity characterized by their identity (entity.Identity), display name, current status (Active/Inactive), and timestamp records for tracking creation and last modification.</div>
+    
+    <h2>activity</h2>
+    <p>The business purpose of a 'activity' database table is to store records of past or ongoing events (or activities) related to various entities, capturing key details about the activity, such as its nature, duration, and timestamp, for potential analysis, reporting, or auditing purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>data</td>
+            <td>BLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>details</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>started_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>ended_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## activity
+
+The business purpose of a 'activity' database table is to store records of past or ongoing events (or activities) related to various entities, capturing key details about the activity, such as its nature, duration, and timestamp, for potential analysis, reporting, or auditing purposes.</div>
+    
+    <h2>address</h2>
+    <p>The business purpose of a database table named 'address' with the listed columns is likely to store and manage geographic residence information for entities, customers, or individuals, providing a structured way to capture and organize address details.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>checksum</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_prefix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_box</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>boundary</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>location</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_to</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>fullmatch_key</td>
+            <td>VARCHAR(512)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>is_leading</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>validity</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address
+
+The business purpose of a database table named 'address' with the listed columns is likely to store and manage geographic residence information for entities, customers, or individuals, providing a structured way to capture and organize address details.</div>
+    
+    <h2>address_attribute</h2>
+    <p>The business purpose of a database table named 'address_attribute' appears to be storing attributes related to geographical locations or addresses, such as attributes like the country, city, or postal code, where each row likely represents an attribute with its respective value and timestamp.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>value_point</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_polygon</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_string</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_attribute
+
+The business purpose of a database table named 'address_attribute' appears to be storing attributes related to geographical locations or addresses, such as attributes like the country, city, or postal code, where each row likely represents an attribute with its respective value and timestamp.</div>
+    
+    <h2>address_attribute_pre30</h2>
+    <p>The business purpose of this database table appears to be storing geospatial attribute data for postal addresses collected before December 30th, likely as part of a spatial reference system or mapping application.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>value_point</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_polygon</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_string</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_attribute_pre30
+
+The business purpose of this database table appears to be storing geospatial attribute data for postal addresses collected before December 30th, likely as part of a spatial reference system or mapping application.</div>
+    
+    <h2>address_attribute_restore</h2>
+    <p>The business purpose of a database table named 'address_attribute_restore' appears to be to store historical restore point values for address attributes that can change over time, allowing for the retrieval and recovery of previous attribute values when needed.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_point</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_polygon</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value_string</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_attribute_restore
+
+The business purpose of a database table named 'address_attribute_restore' appears to be to store historical restore point values for address attributes that can change over time, allowing for the retrieval and recovery of previous attribute values when needed.</div>
+    
+    <h2>address_diagnostic</h2>
+    <p>The business purpose of the "address_diagnostic" database table appears to be storing diagnostic information related to entities (e.g., patients, customers) located at specific addresses, with relevant details such as address codes, descriptions, and corresponding severity levels.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>severity</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_diagnostic
+
+The business purpose of the "address_diagnostic" database table appears to be storing diagnostic information related to entities (e.g., patients, customers) located at specific addresses, with relevant details such as address codes, descriptions, and corresponding severity levels.</div>
+    
+    <h2>address_diagnostic_restore</h2>
+    <p>The database table 'address_diagnostic_restore' seems to track diagnostic restore data for addresses, storing information such as entity identity, parent identity, diagnosis codes, descriptions, and timestamps, suggesting it is used in a healthcare or insurance setting to monitor and manage the restoration of addressed entities, likely using a normalization process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>severity</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_diagnostic_restore
+
+The database table 'address_diagnostic_restore' seems to track diagnostic restore data for addresses, storing information such as entity identity, parent identity, diagnosis codes, descriptions, and timestamps, suggesting it is used in a healthcare or insurance setting to monitor and manage the restoration of addressed entities, likely using a normalization process.</div>
+    
+    <h2>address_event</h2>
+    <p>The database table 'address_event' likely stores events related to changes or updates to entities (e.g., users, organizations) and their associated addresses, with each record capturing the context of a specific change, such as an address update for a user.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>message</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>user_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_event
+
+The database table 'address_event' likely stores events related to changes or updates to entities (e.g., users, organizations) and their associated addresses, with each record capturing the context of a specific change, such as an address update for a user.</div>
+    
+    <h2>address_event_restore</h2>
+    <p>The business purpose of a 'address_event_restore' database table appears to be storing audit trail or event log entries related to updates or changes made to physical addresses, likely in the context of property management or customer information systems.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>parent_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>message</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>user_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_event_restore
+
+The business purpose of a 'address_event_restore' database table appears to be storing audit trail or event log entries related to updates or changes made to physical addresses, likely in the context of property management or customer information systems.</div>
+    
+    <h2>address_pre30</h2>
+    <p>The 'address_pre30' database table appears to be storing pre-2010 version of addresses in a standardized format, likely for business or organizational use, such as customer data or geographic location information.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>checksum</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_prefix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_box</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>boundary</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>location</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_to</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_pre30
+
+The 'address_pre30' database table appears to be storing pre-2010 version of addresses in a standardized format, likely for business or organizational use, such as customer data or geographic location information.</div>
+    
+    <h2>address_relation</h2>
+    <p>The business purpose of a database table named 'address_relation' appears to be tracking relationships between entities related to addresses, such as mapping an individual's address to their profile or identifying corresponding shipping and billing addresses.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>target_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_relation
+
+The business purpose of a database table named 'address_relation' appears to be tracking relationships between entities related to addresses, such as mapping an individual's address to their profile or identifying corresponding shipping and billing addresses.</div>
+    
+    <h2>address_relation_restore</h2>
+    <p>The business purpose of a database table named 'address_relation_restore' appears to be storing historical relationships and restorative data related to address book or directory management, likely retaining records from past updates or merges.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>target_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_relation_restore
+
+The business purpose of a database table named 'address_relation_restore' appears to be storing historical relationships and restorative data related to address book or directory management, likely retaining records from past updates or merges.</div>
+    
+    <h2>address_restore</h2>
+    <p>The business purpose of a database table named 'address_restore' appears to be storing and managing corrected or restored addresses across various entities, with each record representing a unique address that has undergone changes, adjustments, or corrections.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>checksum</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_prefix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_box</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>boundary</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>location</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_to</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## address_restore
+
+The business purpose of a database table named 'address_restore' appears to be storing and managing corrected or restored addresses across various entities, with each record representing a unique address that has undergone changes, adjustments, or corrections.</div>
+    
+    <h2>adp30_upgrade_info</h2>
+    <p>The business purpose of a database table named 'adp30_upgrade_info' with columns 'name' and 'value' is to store metadata or settings related to an upgrade process for an application or software version, such as configuration values or flags.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>value</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## adp30_upgrade_info
+
+The business purpose of a database table named 'adp30_upgrade_info' with columns 'name' and 'value' is to store metadata or settings related to an upgrade process for an application or software version, such as configuration values or flags.</div>
+    
+    <h2>anotherproblem</h2>
+    <p>The business purpose of a database table named 'anothertest' would be to store test results or data related specifically by this name.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>column1</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## anotherproblem
+
+The business purpose of a database table named 'anothertest' would be to store test results or data related specifically by this name.</div>
+    
+    <h2>application</h2>
+    <p>The primary business purpose of this database table appears to be storing metadata for multiple applications, including their operational configuration through attributes like activation status, observation settings, and retry limits.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>code</td>
+            <td>VARCHAR(8)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_attribute_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>is_active</td>
+            <td>CHAR(1)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>operation_attribute_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>is_observer</td>
+            <td>CHAR(1)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>retry_count_attribute_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>retry_limit</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+    </table>
+    
+    <div>## application
+
+The primary business purpose of this database table appears to be storing metadata for multiple applications, including their operational configuration through attributes like activation status, observation settings, and retry limits.</div>
+    
+    <h2>bag_update_0100</h2>
+    <p>The business purpose of the 'bag_update_0100' database table appears to be tracking and updating entities, specifically geographical features such as municipalities, cities, and addresses, with associated predecessor and successor relationships, across different locations and valid periods.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_predecessor_old</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_predecessor_new</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_successor_old</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_successor_new</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0100
+
+The business purpose of the 'bag_update_0100' database table appears to be tracking and updating entities, specifically geographical features such as municipalities, cities, and addresses, with associated predecessor and successor relationships, across different locations and valid periods.</div>
+    
+    <h2>bag_update_0200</h2>
+    <p>The business purpose of the database table 'bag_update_0200' appears to be storing information about updates made to building data entities at a specific point in time (indicated by the date in the column names), specifically tracking changes related to entity identity, local authority information (municipality and city), address details, and status updates.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_predecessor</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_successor</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_old</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>status_new</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_predecessor</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0200
+
+The business purpose of the database table 'bag_update_0200' appears to be storing information about updates made to building data entities at a specific point in time (indicated by the date in the column names), specifically tracking changes related to entity identity, local authority information (municipality and city), address details, and status updates.</div>
+    
+    <h2>bag_update_0300</h2>
+    <p>The business purpose of a database table named 'bag_update_0300' with columns 'entity_identity' and 'entity_identity_predecessor' appears to be tracking changes in entity identities over time, likely for auditing or version control purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_predecessor</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0300
+
+The business purpose of a database table named 'bag_update_0300' with columns 'entity_identity' and 'entity_identity_predecessor' appears to be tracking changes in entity identities over time, likely for auditing or version control purposes.</div>
+    
+    <h2>bag_update_0400</h2>
+    <p>The business purpose of a database table named 'bag_update_0400' is to store updates or changes related to entities (e.g. organizations, projects, etc.) at 4:00 PM that have occurred between the MoA (Master of Agreement) and "status" levels within an organization.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_moa</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_divisions</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_retire</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>status_moa</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid_moa</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0400
+
+The business purpose of a database table named 'bag_update_0400' is to store updates or changes related to entities (e.g. organizations, projects, etc.) at 4:00 PM that have occurred between the MoA (Master of Agreement) and "status" levels within an organization.</div>
+    
+    <h2>bag_update_0500</h2>
+    <p>The business purpose of the 'bag_update_0500' database table appears to be a data warehouse or reporting staging area for collecting and organizing update-related information about various municipal locations (e.g., addresses), likely used for auditing, tracking changes, and facilitating data exchange between internal systems or external stakeholders.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_divisions</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity_predecessors</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>status_next</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>diagnostic_codes</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>diagnostic_descriptions</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>diagnostic_severities</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(1024)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0500
+
+The business purpose of the 'bag_update_0500' database table appears to be a data warehouse or reporting staging area for collecting and organizing update-related information about various municipal locations (e.g., addresses), likely used for auditing, tracking changes, and facilitating data exchange between internal systems or external stakeholders.</div>
+    
+    <h2>bag_update_0600</h2>
+    <p>The business purpose of a database table named 'bag_update_0600' with columns 'entity_identity', 'attribute_names', and 'diagnostic_codes' is likely to track and update attributes or symptoms (diagnostic codes) associated with specific entities (e.g., patients, products, assets), possibly in a systematic or routine manner.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>attribute_names</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>diagnostic_codes</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0600
+
+The business purpose of a database table named 'bag_update_0600' with columns 'entity_identity', 'attribute_names', and 'diagnostic_codes' is likely to track and update attributes or symptoms (diagnostic codes) associated with specific entities (e.g., patients, products, assets), possibly in a systematic or routine manner.</div>
+    
+    <h2>bag_update_0700</h2>
+    <p>The primary business purpose of a database table named 'bag_update_0700' with those columns is to track updates related to bags held by a system or organization at 7am (0700), likely used for inventory management or logistics purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_holding</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_pending</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_0700
+
+The primary business purpose of a database table named 'bag_update_0700' with those columns is to track updates related to bags held by a system or organization at 7am (0700), likely used for inventory management or logistics purposes.</div>
+    
+    <h2>bag_update_blacklist</h2>
+    <p>The business purpose of 'bag_update_blacklist' appears to be tracking and identifying outdated or problematic sources associated with bags for updates to prevent any negative impacts.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## bag_update_blacklist
+
+The business purpose of 'bag_update_blacklist' appears to be tracking and identifying outdated or problematic sources associated with bags for updates to prevent any negative impacts.</div>
+    
+    <h2>cleaning_ap_0000_publication_attribute</h2>
+    <p>The business purpose of the database table 'cleaning_ap_0000_publication_attribute' appears to be managing publication attributes for academic institutions, likely related to funding or research initiatives, and storing relevant details such as entity ID, payment information, source name, status, and applicable attributes and values.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>attribute_name</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>attribute_value</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleaning_ap_0000_publication_attribute
+
+The business purpose of the database table 'cleaning_ap_0000_publication_attribute' appears to be managing publication attributes for academic institutions, likely related to funding or research initiatives, and storing relevant details such as entity ID, payment information, source name, status, and applicable attributes and values.</div>
+    
+    <h2>cleaning_ap_0100_postal_code_tmp</h2>
+    <p>The business purpose of such a database table would be to store temporary postal code data for cleaning and validation purposes for addresses or entities (referred to as "entity_identity") associated with the primary table, likely in preparation for further processing or cleansing.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>row</td>
+            <td>ROWID</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleaning_ap_0100_postal_code_tmp
+
+The business purpose of such a database table would be to store temporary postal code data for cleaning and validation purposes for addresses or entities (referred to as "entity_identity") associated with the primary table, likely in preparation for further processing or cleansing.</div>
+    
+    <h2>cleaning_ap_1c_active</h2>
+    <p>The business purpose of a database table named 'cleaning_ap_1c_active' with columns `entity_identity`, `paid`, and `status` is to store information about actively cleaning accounts in the 1c accounting system.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleaning_ap_1c_active
+
+The business purpose of a database table named 'cleaning_ap_1c_active' with columns `entity_identity`, `paid`, and `status` is to store information about actively cleaning accounts in the 1c accounting system.</div>
+    
+    <h2>cleaning_ap_1g_active</h2>
+    <p>The business purpose of the 'cleaning_ap_1g_active' database table appears to be a data cleansing and validation process for ActivePass project 1G, likely related to payment processing or billing management.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid_orca</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid_oss10</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid_pni</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_orca</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_oss10</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status_pni</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleaning_ap_1g_active
+
+The business purpose of the 'cleaning_ap_1g_active' database table appears to be a data cleansing and validation process for ActivePass project 1G, likely related to payment processing or billing management.</div>
+    
+    <h2>cleaning_ap_9_street_name_short</h2>
+    <p>The business purpose of a database table 'cleaning_ap_9_street_name_short' is to store and manage a list of abbreviations for street names in a specific apartment complex (identified by the 'entity_identity' column), likely used for mapping and cleaning purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleaning_ap_9_street_name_short
+
+The business purpose of a database table 'cleaning_ap_9_street_name_short' is to store and manage a list of abbreviations for street names in a specific apartment complex (identified by the 'entity_identity' column), likely used for mapping and cleaning purposes.</div>
+    
+    <h2>cleanup_address</h2>
+    <p>The business purpose of a database table named 'cleanup_address' with the column 'source_reference' suggests that it is used to store a clean and unified version of customer addresses associated with their identifying reference from outside sources or external data providers.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address
+
+The business purpose of a database table named 'cleanup_address' with the column 'source_reference' suggests that it is used to store a clean and unified version of customer addresses associated with their identifying reference from outside sources or external data providers.</div>
+    
+    <h2>cleanup_address_entity</h2>
+    <p>The business purpose of a database table named 'cleanup_address_entity' appears to be tracking and managing accurate address data by storing information on entities that require cleanup or cleansing, along with their associated sources, status, and validation history.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity
+
+The business purpose of a database table named 'cleanup_address_entity' appears to be tracking and managing accurate address data by storing information on entities that require cleanup or cleansing, along with their associated sources, status, and validation history.</div>
+    
+    <h2>cleanup_address_entity_0h1</h2>
+    <p>The business purpose of a database table named 'cleanup_address_entity_0h1' appears to be storing and managing pre-processed address data by comparing it against a "latest" version or source (as indicated by columns indicating both original and corrected data), likely for use in cleansing, validating, or updating address records.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity_0h1
+
+The business purpose of a database table named 'cleanup_address_entity_0h1' appears to be storing and managing pre-processed address data by comparing it against a "latest" version or source (as indicated by columns indicating both original and corrected data), likely for use in cleansing, validating, or updating address records.</div>
+    
+    <h2>cleanup_address_entity_0h2</h2>
+    <p>The database table likely manages addresses that have been updated or validated by a third-party service (indicated by 'source_reference', 'paid', and 'source_name') and tracks their validity and updates over time.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity_0h2
+
+The database table likely manages addresses that have been updated or validated by a third-party service (indicated by 'source_reference', 'paid', and 'source_name') and tracks their validity and updates over time.</div>
+    
+    <h2>cleanup_address_entity_0h4</h2>
+    <p>The business purpose of the 'cleanup_address_entity_0h4' table is likely to store and manage data about addresses that need to be removed or updated, based on their matching with other related data sources.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity_0h4
+
+The business purpose of the 'cleanup_address_entity_0h4' table is likely to store and manage data about addresses that need to be removed or updated, based on their matching with other related data sources.</div>
+    
+    <h2>cleanup_address_entity_identity_to_inactive</h2>
+    <p>The business purpose of the 'cleanup_address_entity_identity_to_inactive' database table appears to be mapping and storing inactive entity identities associated with addresses that require cleanup or removal.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity_identity_to_inactive
+
+The business purpose of the 'cleanup_address_entity_identity_to_inactive' database table appears to be mapping and storing inactive entity identities associated with addresses that require cleanup or removal.</div>
+    
+    <h2>cleanup_address_entity_oa</h2>
+    <p>The business purpose of the 'cleanup_address_entity_oa' database table is to store and manage data related to address entities, specifically tracking their validity, payment status, and history, likely as part of an identity verification or addressing process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity_oa
+
+The business purpose of the 'cleanup_address_entity_oa' database table is to store and manage data related to address entities, specifically tracking their validity, payment status, and history, likely as part of an identity verification or addressing process.</div>
+    
+    <h2>cleanup_address_entity_republish_update</h2>
+    <p>The business purpose of this database table appears to be tracking and managing updates to addresses that have been previously cleaned or validated across different systems or sources, likely as part of a data quality control process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_address_entity_republish_update
+
+The business purpose of this database table appears to be tracking and managing updates to addresses that have been previously cleaned or validated across different systems or sources, likely as part of a data quality control process.</div>
+    
+    <h2>cleanup_paid_address</h2>
+    <p>The business purpose of a database table named 'cleanup_paid_address' with a column 'paid' likely indicates that it stores information about addresses associated with paid records, where 'paid' might represent whether an address has been assigned to or associated with a specific payment or transaction.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address
+
+The business purpose of a database table named 'cleanup_paid_address' with a column 'paid' likely indicates that it stores information about addresses associated with paid records, where 'paid' might represent whether an address has been assigned to or associated with a specific payment or transaction.</div>
+    
+    <h2>cleanup_paid_address_entity</h2>
+    <p>The business purpose of a database table named 'cleanup_paid_address_entity' is to store and manage data related to the cleanup of paid addresses, likely in the context of payment processing or invoice management, where each record represents an address associated with a valid payment.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>bag_nummeraanduidingidentificatie</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address_entity
+
+The business purpose of a database table named 'cleanup_paid_address_entity' is to store and manage data related to the cleanup of paid addresses, likely in the context of payment processing or invoice management, where each record represents an address associated with a valid payment.</div>
+    
+    <h2>cleanup_paid_address_entity_0e2</h2>
+    <p>The database table appears to be tracking payments or subscriptions for individuals (entities) and their corresponding addresses, gathering information on paid transactions, source references, entity identities, and payment statuses with associated verification details.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>bag_nummeraanduidingidentificatie</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address_entity_0e2
+
+The database table appears to be tracking payments or subscriptions for individuals (entities) and their corresponding addresses, gathering information on paid transactions, source references, entity identities, and payment statuses with associated verification details.</div>
+    
+    <h2>cleanup_paid_address_entity_0e3</h2>
+    <p>The business purpose of the 'cleanup_paid_address_entity_0e3' database table appears to be tracking and managing data related to cleaned-up paid addresses by monitoring their validation status and tracking updates from the latest available source.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>bag_nummeraanduidingidentificatie</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address_entity_0e3
+
+The business purpose of the 'cleanup_paid_address_entity_0e3' database table appears to be tracking and managing data related to cleaned-up paid addresses by monitoring their validation status and tracking updates from the latest available source.</div>
+    
+    <h2>cleanup_paid_address_entity_republish_update</h2>
+    <p>The business purpose of this database table is to manage the update and re-publishing of cleaned and validated address data records related to paid invoices or transactions, with each record representing a specific payment source and its associated identity.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>bag_nummeraanduidingidentificatie</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address_entity_republish_update
+
+The business purpose of this database table is to manage the update and re-publishing of cleaned and validated address data records related to paid invoices or transactions, with each record representing a specific payment source and its associated identity.</div>
+    
+    <h2>cleanup_paid_address_entity_withdrawn</h2>
+    <p>The business purpose of this database table appears to be tracking withdrawn payments (identified by the "paid" column) tied to a unique identifier ("entity_identity") and providing detailed information about the withdrawal process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>full_match_string</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version_from_latest</td>
+            <td>INTEGER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>bag_nummeraanduidingidentificatie</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address_entity_withdrawn
+
+The business purpose of this database table appears to be tracking withdrawn payments (identified by the "paid" column) tied to a unique identifier ("entity_identity") and providing detailed information about the withdrawal process.</div>
+    
+    <h2>cleanup_paid_address_with_paid</h2>
+    <p>The primary business purpose of a database table named 'cleanup_paid_address_with_paid' with these columns seems to be cleaning up and standardizing paid addresses from various sources in an organization's customer data.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(5)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## cleanup_paid_address_with_paid
+
+The primary business purpose of a database table named 'cleanup_paid_address_with_paid' with these columns seems to be cleaning up and standardizing paid addresses from various sources in an organization's customer data.</div>
+    
+    <h2>del_addresses_sa</h2>
+    <p>The business purpose of a database table named 'del_addresses_sa' appears to be storing and managing address data for specific entities in a jurisdiction (likely South Africa), likely supporting delivery logistics or postal service operations.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>checksum</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>status</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>purpose_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>district_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>floor_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_code</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_prefix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_type</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_box</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>boundary</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>location</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_from</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>valid_to</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>create_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>update_timestamp</td>
+            <td>TIMESTAMP</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>fullmatch_key</td>
+            <td>VARCHAR(512)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>is_leading</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>validity</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## del_addresses_sa
+
+The business purpose of a database table named 'del_addresses_sa' appears to be storing and managing address data for specific entities in a jurisdiction (likely South Africa), likely supporting delivery logistics or postal service operations.</div>
+    
+    <h2>dup_addresses</h2>
+    <p>The business purpose of a database table named 'dup_addresses' with columns 'rn' and 'entity_identity' appears to be storing duplicate addresses associated with entities, where 'rn' likely contains an identifier (e.g. a running number or serial number) and 'entity_identity' represents the entity responsible for the duplicate address.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>rn</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dup_addresses
+
+The business purpose of a database table named 'dup_addresses' with columns 'rn' and 'entity_identity' appears to be storing duplicate addresses associated with entities, where 'rn' likely contains an identifier (e.g. a running number or serial number) and 'entity_identity' represents the entity responsible for the duplicate address.</div>
+    
+    <h2>dups_fullmatch_key_paid</h2>
+    <p>The business purpose of a database table named 'dups_fullmatch_key_paid' with a column named 'fullmatch_key' is likely to store unique identifiers for paid full matches, possibly as part of a ticketing or membership system.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>fullmatch_key</td>
+            <td>VARCHAR(512)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dups_fullmatch_key_paid
+
+The business purpose of a database table named 'dups_fullmatch_key_paid' with a column named 'fullmatch_key' is likely to store unique identifiers for paid full matches, possibly as part of a ticketing or membership system.</div>
+    
+    <h2>dups_fullmatch_key_paid_orig</h2>
+    <p>The business purpose of a database table named 'dups.fullmatch_key_paid_orig' appears to be identifying and tracking duplicate full-match keys in a payment system, where each row represents a pair of records with the same 'fullmatch_key', differing only by a paid status ('new_paid' vs. 'old_paid') and entity identity.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>fullmatch_key</td>
+            <td>VARCHAR(512)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>old_paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dups_fullmatch_key_paid_orig
+
+The business purpose of a database table named 'dups.fullmatch_key_paid_orig' appears to be identifying and tracking duplicate full-match keys in a payment system, where each row represents a pair of records with the same 'fullmatch_key', differing only by a paid status ('new_paid' vs. 'old_paid') and entity identity.</div>
+    
+    <h2>dups_paid_fullmatch_key</h2>
+    <p>The business purpose of a database table named 'dups_paid_fullmatch_key' with columns 'paid' likely indicates that it stores a flag to track whether a duplicate payment has been made in full, suggesting an e-commerce or financial application where duplicate payments need to be identified and handled.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dups_paid_fullmatch_key
+
+The business purpose of a database table named 'dups_paid_fullmatch_key' with columns 'paid' likely indicates that it stores a flag to track whether a duplicate payment has been made in full, suggesting an e-commerce or financial application where duplicate payments need to be identified and handled.</div>
+    
+    <h2>dups_paid_fullmatch_key_fix</h2>
+    <p>The business purpose of a database table named 'dups_paid_fullmatch_key_fix' appears to be to identify and correct duplicate payments flagged by "fullmatch_key", likely for billing or financial purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>fullmatch_key</td>
+            <td>VARCHAR(512)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_paid</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dups_paid_fullmatch_key_fix
+
+The business purpose of a database table named 'dups_paid_fullmatch_key_fix' appears to be to identify and correct duplicate payments flagged by "fullmatch_key", likely for billing or financial purposes.</div>
+    
+    <h2>dups_paid_fullmatch_key_orig</h2>
+    <p>The primary business purpose of a database table named 'dups_paid_fullmatch_key_orig' appears to be identifying duplicate records involving payment status information (paid and newPaid), tracked by entity_identity, possibly for data cleansing or integration purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(24)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_paid</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dups_paid_fullmatch_key_orig
+
+The primary business purpose of a database table named 'dups_paid_fullmatch_key_orig' appears to be identifying duplicate records involving payment status information (paid and newPaid), tracked by entity_identity, possibly for data cleansing or integration purposes.</div>
+    
+    <h2>dups_paid_leading</h2>
+    <p>The database table 'dups_paid_leaking' likely contains data on duplicate payments or entities that have been flagged as paid but should not have been, suggesting an indication of erroneous payment processing.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+    </table>
+    
+    <div>## dups_paid_leading
+
+The database table 'dups_paid_leaking' likely contains data on duplicate payments or entities that have been flagged as paid but should not have been, suggesting an indication of erroneous payment processing.</div>
+    
+    <h2>lavastorm</h2>
+    <p>The business purpose of a database table named 'lavastorm' with the specified columns appears to be storing and managing information related to transactions or events associated with some type of festival (likely a cultural or carnival event), possibly in Canada, as indicated by the country and province codes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>action</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_name</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid_parent</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid_source</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_code</td>
+            <td>VARCHAR(4)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>country_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_code</td>
+            <td>VARCHAR(4)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>province_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_code</td>
+            <td>VARCHAR(4)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>municipality_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_code</td>
+            <td>VARCHAR(4)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name_short</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_type</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_letter</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_suffix</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>room_name</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>x</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>y</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>note</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>line_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>group_number</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## lavastorm
+
+The business purpose of a database table named 'lavastorm' with the specified columns appears to be storing and managing information related to transactions or events associated with some type of festival (likely a cultural or carnival event), possibly in Canada, as indicated by the country and province codes.</div>
+    
+    <h2>lavastorm_location_lookup</h2>
+    <p>The 'lavastorm_location_lookup' database table appears to be a data storage and lookup mechanism for geographically relevant information, such as city locations, streets, postal codes, and coordinates (x, y), likely used in a mapping or logistics-based application, possibly related to the Lavastorm company's business.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>city_code</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>city_name</td>
+            <td>VARCHAR(80)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>street_name</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>postal_code</td>
+            <td>VARCHAR(6)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>door_count</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>x</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>y</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>location</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## lavastorm_location_lookup
+
+The 'lavastorm_location_lookup' database table appears to be a data storage and lookup mechanism for geographically relevant information, such as city locations, streets, postal codes, and coordinates (x, y), likely used in a mapping or logistics-based application, possibly related to the Lavastorm company's business.</div>
+    
+    <h2>mdrt_32182$</h2>
+    <p>The business purpose of a database table named 'mdrt_32182$' with columns 'node_id', 'node_level', and 'info' likely lies within network routing configuration management, possibly in an Active Directory or similar system, where this data is used to track and manage device information (node) at specific levels.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>node_id</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>node_level</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>info</td>
+            <td>BLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## mdrt_32182$
+
+The business purpose of a database table named 'mdrt_32182$' with columns 'node_id', 'node_level', and 'info' likely lies within network routing configuration management, possibly in an Active Directory or similar system, where this data is used to track and manage device information (node) at specific levels.</div>
+    
+    <h2>mdrt_32183$</h2>
+    <p>The database table `mdrt_32183$` appears to be a temporal or versioning system, likely used for managing and tracking data changes over time, given its timestamp-like nature (`node_id` and `info`) alongside traditional columnar attributes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>node_id</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>node_level</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>info</td>
+            <td>BLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## mdrt_32183$
+
+The database table `mdrt_32183$` appears to be a temporal or versioning system, likely used for managing and tracking data changes over time, given its timestamp-like nature (`node_id` and `info`) alongside traditional columnar attributes.</div>
+    
+    <h2>mdrt_3f006$</h2>
+    <p>The business purpose of a database table named 'mdrt_3f006$' with columns 'node_id', 'node_level', and 'info' likely appears to be a temporary or intermediate storage for metadata related to nodes at various levels in an organizational or hierarchical structure.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>node_id</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>node_level</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>info</td>
+            <td>BLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## mdrt_3f006$
+
+The business purpose of a database table named 'mdrt_3f006$' with columns 'node_id', 'node_level', and 'info' likely appears to be a temporary or intermediate storage for metadata related to nodes at various levels in an organizational or hierarchical structure.</div>
+    
+    <h2>mdrt_3f01a$</h2>
+    <p>The database table 'mdrt_3f01a$' likely stores metadata about routing information for Microsoft's Hyper-V platform (MDRT4), with each row corresponding to a network node and containing its ID, level (indicating importance or priority), and associated info.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>node_id</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>node_level</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>info</td>
+            <td>BLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## mdrt_3f01a$
+
+The database table 'mdrt_3f01a$' likely stores metadata about routing information for Microsoft's Hyper-V platform (MDRT4), with each row corresponding to a network node and containing its ID, level (indicating importance or priority), and associated info.</div>
+    
+    <h2>metklant</h2>
+    <p>The business purpose of the 'metklant' table with the column 'metklantrow' is likely to store information about customers or clients (metklant), possibly including their contact details or other relevant data that requires row-level access, hinted at by the use of a column named after its row's content.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>metklantrow</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## metklant
+
+The business purpose of the 'metklant' table with the column 'metklantrow' is likely to store information about customers or clients (metklant), possibly including their contact details or other relevant data that requires row-level access, hinted at by the use of a column named after its row's content.</div>
+    
+    <h2>mytemppaids</h2>
+    <p>The business purpose of a database table 'mytemppaids' with a column 'mypaids' likely pertains to storage and management of temporary assistance or aid information, such as vouchers or redemption codes, allocated by an organization to its customers or recipients.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>mypaids</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## mytemppaids
+
+The business purpose of a database table 'mytemppaids' with a column 'mypaids' likely pertains to storage and management of temporary assistance or aid information, such as vouchers or redemption codes, allocated by an organization to its customers or recipients.</div>
+    
+    <h2>post30_fix_410_delete</h2>
+    <p>The business purpose of a database table named 'post30_fix_410_delete' with columns 'leading_identity', 'previous_identity', and 'type' appears to be tracking and managing the deletion of duplicate or unnecessary posts or documents from a system, possibly as part of an article rewriting or consolidation process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>leading_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>previous_identity</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>CHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## post30_fix_410_delete
+
+The business purpose of a database table named 'post30_fix_410_delete' with columns 'leading_identity', 'previous_identity', and 'type' appears to be tracking and managing the deletion of duplicate or unnecessary posts or documents from a system, possibly as part of an article rewriting or consolidation process.</div>
+    
+    <h2>post30_fix_410_delete_sa</h2>
+    <p>The business purpose of this database table appears to be storing fix data related to deleting social accountability (Sa) records at post 30 for a specific legacy application version, presumably as part of an IT migration or archiving process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>leading_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>previous_identity</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>type</td>
+            <td>CHAR(20)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## post30_fix_410_delete_sa
+
+The business purpose of this database table appears to be storing fix data related to deleting social accountability (Sa) records at post 30 for a specific legacy application version, presumably as part of an IT migration or archiving process.</div>
+    
+    <h2>post30_fix_data</h2>
+    <p>The primary business purpose of a database table named 'post30_fix_data' with columns 'action', 'entity_identity', 'paid', and 'sources' appears to be data storage and management for post-30 fixes or updates in an online application, likely related to advertising or sponsorship verification.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>action</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>paid</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sources</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## post30_fix_data
+
+The primary business purpose of a database table named 'post30_fix_data' with columns 'action', 'entity_identity', 'paid', and 'sources' appears to be data storage and management for post-30 fixes or updates in an online application, likely related to advertising or sponsorship verification.</div>
+    
+    <h2>problematicpaids</h2>
+    <p>The business purpose of a database table named 'problematicpaids' with a single column 'column1' would likely be to track and store problematic payments made by patients, contractors, or other entities, allowing for easy identification and potential rectification of discrepancies.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>column1</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## problematicpaids
+
+The business purpose of a database table named 'problematicpaids' with a single column 'column1' would likely be to track and store problematic payments made by patients, contractors, or other entities, allowing for easy identification and potential rectification of discrepancies.</div>
+    
+    <h2>sa_source_reference</h2>
+    <p>The business purpose of a database table named 'sa_source_reference' with columns: source_reference, new_source_reference appears to be to store and manage references or mappings between an original source information (source_reference) and a modified or equivalent version of that information in the database (new_source_reference), likely for data quality, integration, or transformation purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_source_reference</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## sa_source_reference
+
+The business purpose of a database table named 'sa_source_reference' with columns: source_reference, new_source_reference appears to be to store and manage references or mappings between an original source information (source_reference) and a modified or equivalent version of that information in the database (new_source_reference), likely for data quality, integration, or transformation purposes.</div>
+    
+    <h2>sa_source_reference_ei</h2>
+    <p>The business purpose of the database table 'sa_source_reference_ei' with columns 'entity_identity', 'old_source_reference', and 'new_source_reference' is to track and store mapping information between a unique external identifier (entity identity) and its corresponding source reference values before and after some change or transformation occurred.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>old_source_reference</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_source_reference</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## sa_source_reference_ei
+
+The business purpose of the database table 'sa_source_reference_ei' with columns 'entity_identity', 'old_source_reference', and 'new_source_reference' is to track and store mapping information between a unique external identifier (entity identity) and its corresponding source reference values before and after some change or transformation occurred.</div>
+    
+    <h2>saspaids</h2>
+    <p>The business purpose of a database table named 'saspaids' with a single column 'column1' would likely be to store and manage payment information or records related to specific "spa visits" in the SASPA (Spa Payment Assistant) system.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>column1</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## saspaids
+
+The business purpose of a database table named 'saspaids' with a single column 'column1' would likely be to store and manage payment information or records related to specific "spa visits" in the SASPA (Spa Payment Assistant) system.</div>
+    
+    <h2>se_history_audit</h2>
+    <p>The business purpose of a database table named 'se_history_audit' with these columns suggests that it tracks and documents changes (events) to software models (modelid), including audit log activity such as creates, updates, or modifications made by different users or systems (createdby, host), which can be used for auditing, compliance, or troubleshooting purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>timestamp</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>createdby</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>host</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>event</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_audit
+
+The business purpose of a database table named 'se_history_audit' with these columns suggests that it tracks and documents changes (events) to software models (modelid), including audit log activity such as creates, updates, or modifications made by different users or systems (createdby, host), which can be used for auditing, compliance, or troubleshooting purposes.</div>
+    
+    <h2>se_history_batch_info</h2>
+    <p>The business purpose of a database table named 'se_history_batch_info' appears to be to store historical information about batches in a software development lifecycle (Agile and iterative) project management system, where the columns likely track batch-related metadata such as creation, start and end dates, state transitions, and status updates.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>creationdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>startdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>enddate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>statedate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>timestamp</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>lasterror</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_batch_info
+
+The business purpose of a database table named 'se_history_batch_info' appears to be to store historical information about batches in a software development lifecycle (Agile and iterative) project management system, where the columns likely track batch-related metadata such as creation, start and end dates, state transitions, and status updates.</div>
+    
+    <h2>se_history_batch_process</h2>
+    <p>The business purpose of the database table 'se_history_batch_process' appears to be tracking and documenting historical processing batches for some product or service, where each row represents a single batch with associated metadata such as model ID, batch ID, process type, order status, start and end dates, and completion state.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>processname</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>orderid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>startdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>enddate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>statedate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_batch_process
+
+The business purpose of the database table 'se_history_batch_process' appears to be tracking and documenting historical processing batches for some product or service, where each row represents a single batch with associated metadata such as model ID, batch ID, process type, order status, start and end dates, and completion state.</div>
+    
+    <h2>se_history_batch_source</h2>
+    <p>The business purpose of a database table named 'se_history_batch_source' appears to be tracking and storing historical information about various data source batches for model updates or revisions.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(256)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>sourcetype</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcesubtype</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>xml</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>version</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>versiondate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_batch_source
+
+The business purpose of a database table named 'se_history_batch_source' appears to be tracking and storing historical information about various data source batches for model updates or revisions.</div>
+    
+    <h2>se_history_model_field</h2>
+    <p>The business purpose of the 'se_history_model_field' database table appears to be tracking changes to model fields over time, storing a audit trail of updates made to schema definitions (models) in a system, likely supporting data model versioning and governance.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>fieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tableid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>externalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcefield</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcetype</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcechecksum</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>validfrom</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>validto</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>logicalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>settings</td>
+            <td>VARCHAR(2000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>se_history_ins_batchid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>se_history_mut_batchid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>metainfo</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_field
+
+The business purpose of the 'se_history_model_field' database table appears to be tracking changes to model fields over time, storing a audit trail of updates made to schema definitions (models) in a system, likely supporting data model versioning and governance.</div>
+    
+    <h2>se_history_model_info</h2>
+    <p>The business purpose of a database table named 'se_history_model_info' appears to be tracking changes and metadata for different SQL Server databases (or models), storing information such as model ID, name, SRID settings, and timestamped updates, likely for auditing, versioning, or troubleshooting purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>srid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>logicalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>settings</td>
+            <td>VARCHAR(2000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>creationdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>createdby</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>lastupdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>lastupdatedby</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_info
+
+The business purpose of a database table named 'se_history_model_info' appears to be tracking changes and metadata for different SQL Server databases (or models), storing information such as model ID, name, SRID settings, and timestamped updates, likely for auditing, versioning, or troubleshooting purposes.</div>
+    
+    <h2>se_history_model_map</h2>
+    <p>The business purpose of a database table named 'se_history_model_map' with these columns appears to be storing historical mapping data for applications or services that use Geographic Information Systems (GIS) or spatial databases.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>maptypeid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>mapname</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>mapid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>bounds</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>metainfo</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_map
+
+The business purpose of a database table named 'se_history_model_map' with these columns appears to be storing historical mapping data for applications or services that use Geographic Information Systems (GIS) or spatial databases.</div>
+    
+    <h2>se_history_model_mapfield</h2>
+    <p>The business purpose of the database table 'se_history_model_mapfield' appears to be to store historical mapping records between Salesforce object fields and external data source concepts, likely for data integration or ELT (Extract, Load, Transform) purposes.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>maptypeid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>fieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>externalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>fieldid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>mapfieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>midfieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_mapfield
+
+The business purpose of the database table 'se_history_model_mapfield' appears to be to store historical mapping records between Salesforce object fields and external data source concepts, likely for data integration or ELT (Extract, Load, Transform) purposes.</div>
+    
+    <h2>se_history_model_mapowner</h2>
+    <p>The business purpose of a database table `se_history_model_mapowner` appears to be tracking changes to model owners in a data mapping process across different model types (e.g., tables in an application), storing the historical mapping information for potentially multiple applications or system entities.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>maptypeid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>fieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_mapowner
+
+The business purpose of a database table `se_history_model_mapowner` appears to be tracking changes to model owners in a data mapping process across different model types (e.g., tables in an application), storing the historical mapping information for potentially multiple applications or system entities.</div>
+    
+    <h2>se_history_model_maptype</h2>
+    <p>The business purpose of a database table named 'se_history_model_maptype' appears to be tracking changes or revisions to mapping types (e.g., models associated with specific source data types), likely as part of a larger data management system.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>mapsourcename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>maptypename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>maptypeid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>externalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>metainfo</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_maptype
+
+The business purpose of a database table named 'se_history_model_maptype' appears to be tracking changes or revisions to mapping types (e.g., models associated with specific source data types), likely as part of a larger data management system.</div>
+    
+    <h2>se_history_model_table</h2>
+    <p>The business purpose of the 'se_history_model_table' database table appears to be to keep a record of changes made to database models over time, tracking version history and metadata related to each change.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tableid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>externalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcetable</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcechecksum</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>validfrom</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>validto</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>logicalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>settings</td>
+            <td>VARCHAR(2000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>se_history_ins_batchid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>se_history_mut_batchid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>metainfo</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_model_table
+
+The business purpose of the 'se_history_model_table' database table appears to be to keep a record of changes made to database models over time, tracking version history and metadata related to each change.</div>
+    
+    <h2>se_history_staging_error</h2>
+    <p>The business purpose of a database table named 'se_history_staging_error' is to track and record errors that occurred during ETL (Extract, Transform, Load) process stages, likely in data warehousing or data integration environments.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingtablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>sourcekey</td>
+            <td>VARCHAR(256)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingtype</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>errormessage</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_staging_error
+
+The business purpose of a database table named 'se_history_staging_error' is to track and record errors that occurred during ETL (Extract, Transform, Load) process stages, likely in data warehousing or data integration environments.</div>
+    
+    <h2>se_history_staging_field</h2>
+    <p>The business purpose of a database table named 'se_history_staging_field' is to store versioned records of historical stage field configurations for data modeling and source mapping within the application lifecycle management process.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingtablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingfieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>fieldsourcename</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_staging_field
+
+The business purpose of a database table named 'se_history_staging_field' is to store versioned records of historical stage field configurations for data modeling and source mapping within the application lifecycle management process.</div>
+    
+    <h2>se_history_staging_geom_check</h2>
+    <p>The business purpose of a database table named 'se_history_staging_geom_check' appears to be logging and tracing geometry-related issues or anomalies that occur during the staging process of geospatial (geo) features across different models, tabs, and fields, with the goal of identifying and analyzing potential errors or inconsistencies.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>sourcetablename</td>
+            <td>VARCHAR(128)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>sourcekey</td>
+            <td>VARCHAR(256)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>sourcefieldname</td>
+            <td>VARCHAR(128)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>messagetype</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>message</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>data</td>
+            <td>VARCHAR(4000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_staging_geom_check
+
+The business purpose of a database table named 'se_history_staging_geom_check' appears to be logging and tracing geometry-related issues or anomalies that occur during the staging process of geospatial (geo) features across different models, tabs, and fields, with the goal of identifying and analyzing potential errors or inconsistencies.</div>
+    
+    <h2>se_history_staging_info</h2>
+    <p>The business purpose of a database table named 'se_history_staging_info' with columns: modelid, batchid, startdate, enddate, state is to store information about the staging process of specific models, including detailed history and status updates such as dates and states.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>startdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>enddate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>state</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_staging_info
+
+The business purpose of a database table named 'se_history_staging_info' with columns: modelid, batchid, startdate, enddate, state is to store information about the staging process of specific models, including detailed history and status updates such as dates and states.</div>
+    
+    <h2>se_history_staging_mapfield</h2>
+    <p>The business purpose of the 'se_history_staging_mapfield' table appears to be mapping between different data sources and formats, likely used in ETL (Extract, Transform, Load) processes for creating mappings between source data fields and staging tables.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>mapsourcename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>maptypename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingtablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>sourcefieldname</td>
+            <td>VARCHAR(128)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingfieldid</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>mapfieldtype</td>
+            <td>VARCHAR(32)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>mapfieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>midfieldname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>externalname</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_staging_mapfield
+
+The business purpose of the 'se_history_staging_mapfield' table appears to be mapping between different data sources and formats, likely used in ETL (Extract, Transform, Load) processes for creating mappings between source data fields and staging tables.</div>
+    
+    <h2>se_history_staging_table</h2>
+    <p>The database table 'se_history_staging_table' appears to be used for data warehousing and analytics purposes, storing historical data on the processing, staging, and errors of various data sources and models.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>modelid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>batchid</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>stagingtablename</td>
+            <td>VARCHAR(64)</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>tablesourcename</td>
+            <td>VARCHAR(128)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>sourcedate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>stagingtype</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>stagingstartdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>stagingenddate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>stagingstate</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>recordcount</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>stagingerrorcount</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>historystartdate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>historyenddate</td>
+            <td>DATE</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>historystate</td>
+            <td>VARCHAR(64)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>insertcount</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>updatecount</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>deletecount</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>failurecount</td>
+            <td>NUMBER</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>errormessage</td>
+            <td>VARCHAR(3000)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>staginghistorycommand</td>
+            <td>NCLOB</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_staging_table
+
+The database table 'se_history_staging_table' appears to be used for data warehousing and analytics purposes, storing historical data on the processing, staging, and errors of various data sources and models.</div>
+    
+    <h2>se_history_version_info</h2>
+    <p>The business purpose of a database table named 'se_history_version_info' with columns 'version' and 'description' is likely to store information about different versions of software (e.g. application updates) and the reasons behind each update (e.g. "Fixed Bug", "Added Feature"), providing historical versioning and changelog capabilities.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>version</td>
+            <td>NUMBER</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        
+        <tr>
+            <td>description</td>
+            <td>VARCHAR(256)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## se_history_version_info
+
+The business purpose of a database table named 'se_history_version_info' with columns 'version' and 'description' is likely to store information about different versions of software (e.g. application updates) and the reasons behind each update (e.g. "Fixed Bug", "Added Feature"), providing historical versioning and changelog capabilities.</div>
+    
+    <h2>temptable</h2>
+    <p>The business purpose of a database table named 'temptable' with columns 'paids' likely indicates that payments have been temporarily made or are pending confirmation, suggesting a waiting period before full payment or processing.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>paids</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## temptable
+
+The business purpose of a database table named 'temptable' with columns 'paids' likely indicates that payments have been temporarily made or are pending confirmation, suggesting a waiting period before full payment or processing.</div>
+    
+    <h2>vfz_01</h2>
+    <p>The business purpose of a database table named 'vfz_01' appears to be tracking and storing information related to payment processing and customer updates for various entities, such as postal code changes or location overrides.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>entity_identity</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>entity_identity2</td>
+            <td>VARCHAR(36)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_paid</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_postal_code</td>
+            <td>VARCHAR(6)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>new_location_override</td>
+            <td>NULL</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>old_paid</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+        <tr>
+            <td>source_reference</td>
+            <td>VARCHAR(16)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## vfz_01
+
+The business purpose of a database table named 'vfz_01' appears to be tracking and storing information related to payment processing and customer updates for various entities, such as postal code changes or location overrides.</div>
+    
+    <h2>zonderklant</h2>
+    <p>I couldn't find any information about the 'zonderklant' database table. However, I can suggest that it might be related to customer data management or handling customer loyalty rewards, where the column 'szonderklantrow' (or without customer row) may store information about customers who don't receive such benefits or rewards, implying that these "without customer" individuals are not necessarily a type of entity in general.</p>
+    
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Primary Key</th><th>Nullable</th></tr>
+        
+        <tr>
+            <td>zonderklantrow</td>
+            <td>VARCHAR(26)</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        
+    </table>
+    
+    <div>## zonderklant
+
+I couldn't find any information about the 'zonderklant' database table. However, I can suggest that it might be related to customer data management or handling customer loyalty rewards, where the column 'szonderklantrow' (or without customer row) may store information about customers who don't receive such benefits or rewards, implying that these "without customer" individuals are not necessarily a type of entity in general.</div>
+    
+    
+    <h1>Relationships</h1>
+    
+    <h3>address_attribute.parent_identity → address.entity_identity</h3>
+    <p>The relationship between the database tables 'address_attribute' and 'address' is a one-to-one reference, as addressed_attribute.["parent_identity"] uniquely corresponds to the entity identified by address["entity_identity"], indicating that each address has a corresponding attribute set while each attribute set belongs to exactly one address domain data type.
+
+It would be beneficial for clarity for some examples or instances of how this actually works with real examples as well</p>
+    
+    <h3>address_diagnostic.parent_identity → address.entity_identity</h3>
+    <p>The relationship between 'address_diagnostic' and 'address' is a one-to-many relationship, where each address can have multiple diagnostic records (i.e., an address may appear in the 'parent_identity' column of many 'address_diagnostic' rows), but not necessarily vice versa.</p>
+    
+    <h3>address_event.user_identity → USER.entity_identity</h3>
+    <p>The relationship between database tables 'address_event' and 'USER' is a many-to-many relationship, as the foreign key 'user_identity' in 'address_event' references the primary key 'entity_identity' in 'USER', indicating that multiple users can be associated with multiple events and vice versa.</p>
+    
+    <h3>address_event.parent_identity → address.entity_identity</h3>
+    <p>The relationship between `address_event` and `address` is a one-to-many relationship, as the same `entity_identity` (i.e., an address) can have multiple corresponding records in `address_event`.</p>
+    
+    <h3>address_relation.source_identity → address.entity_identity</h3>
+    <p>The relationship between 'address Relation' and 'address' in this scenario is a one-to-many, as the 'source_identity' within 'address_relation' can reference multiple addresses (one address per record in 'address_relation'), making 'address_relation' dependent on but not exclusively linked to 'address'.</p>
+    
+    <h3>address_relation.target_identity → address.entity_identity</h3>
+    <p>The relationship between 'address Relation' and 'address' in this scenario is a one-to-many, as the 'source_identity' within 'address_relation' can reference multiple addresses (one address per record in 'address_relation'), making 'address_relation' dependent on but not exclusively linked to 'address'.</p>
+    
+</body>
+</html>

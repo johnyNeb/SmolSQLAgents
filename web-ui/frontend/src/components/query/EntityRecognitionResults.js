@@ -29,7 +29,7 @@ const EntityRecognitionResults = ({ entityRecognition }) => {
                 className="progress-bar"
                 style={{ width: `${(entityRecognition.confidence || 0) * 100}%` }}
               >
-                {(entityRecognition.confidence || 0) * 100}%
+                {Math.round((entityRecognition.confidence || 0) * 100)}%
               </div>
             </div>
           </div>

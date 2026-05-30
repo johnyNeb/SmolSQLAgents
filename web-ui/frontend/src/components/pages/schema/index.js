@@ -30,31 +30,77 @@ const SchemaPage = () => {
   }, [schemaData, searchQuery, sortBy]);
 
   const loadSchemaData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('http://127.0.0.1:5000/api/schema');
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          const tables = data.tables || [];
-          const relationships = data.relationships || [];
-          
-          // Calculate statistics
-          const statistics = calculateStatistics(tables, relationships);
-          
-          setSchemaData({
-            tables,
-            relationships,
-            statistics
-          });
+      setIsLoading(true);
+      try {
+        const [schemaResponse, docResponse, relResponse] = await Promise.all([
+          fetch('http://127.0.0.1:5000/api/schema'),
+          fetch('http://127.0.0.1:5000/api/documentation/summaries'),
+          fetch('http://127.0.0.1:5000/api/documentation/relationships')
+        ]);
+
+        let tables = [];
+        let relationships = [];
+
+        if (schemaResponse.ok) {
+          const data = await schemaResponse.json();
+          if (data.success) {
+            tables = data.tables || [];
+          }
         }
+
+        // Enrich tables with column data from documentation store
+        if (docResponse.ok) {
+            const docData = await docResponse.json();
+            if (docData.success && docData.summaries) {
+                const docMap = {};
+                Object.values(docData.summaries).forEach(item => {
+                    if (item.type === 'table') docMap[item.name] = item;
+                });
+                console.log('docMap keys:', Object.keys(docMap).slice(0, 3));
+                console.log('sample doc entry:', Object.values(docMap)[0]);
+                console.log('sample table:', tables[0]);
+
+                // Fetch full table docs including schema_data
+                tables = await Promise.all(tables.map(async table => {
+                    const doc = docMap[table.name];
+                    if (doc) {
+                        try {
+                            const tableDocResponse = await fetch(`http://127.0.0.1:5000/api/documentation/tables/${table.name}`);
+                            if (tableDocResponse.ok) {
+                                const tableDocData = await tableDocResponse.json();
+                                if (tableDocData.success && tableDocData.table?.schema_data?.columns) {
+                                    return {
+                                        ...table,
+                                        columns: tableDocData.table.schema_data.columns,
+                                        business_purpose: tableDocData.table.business_purpose,
+                                        status: tableDocData.table.status
+                                    };
+                                }
+                            }
+                        } catch (e) {}
+                    }
+                    return table;
+                }));
+            }
+        }
+
+        // Load relationships from documentation store
+        if (relResponse.ok) {
+          const relData = await relResponse.json();
+          if (relData.success && relData.relationships) {
+            relationships = Object.values(relData.relationships);
+          }
+        }
+
+        const statistics = calculateStatistics(tables, relationships);
+        setSchemaData({ tables, relationships, statistics });
+
+      } catch (error) {
+        console.error('Error loading schema data:', error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error loading schema data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
   const calculateStatistics = (tables, relationships) => {
     const dataTypes = {};

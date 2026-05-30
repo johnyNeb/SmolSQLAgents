@@ -126,16 +126,26 @@ class DocumentationStore:
                   datetime.now(), table_name))
             logger.info(f"Saved documentation for table: {table_name}")
     
-    def save_relationship_documentation(self, relationship_id: int, 
-                                      relationship_type: str, documentation: str):
+    # def save_relationship_documentation(self, relationship_id: int, 
+    #                                   relationship_type: str, documentation: str):
+    #     """Save processed relationship documentation."""
+    #     with sqlite3.connect(self.db_path) as conn:
+    #         conn.execute("""
+    #             UPDATE relationship_metadata
+    #             SET relationship_type = ?, documentation = ?, 
+    #                 processed_at = ?, status = 'completed'
+    #             WHERE id = ?
+    #         """, (relationship_type, documentation, datetime.now(), relationship_id))
+    #         logger.info(f"Saved documentation for relationship: {relationship_id}")
+    def save_relationship_documentation(self, relationship_id, relationship_type: str, documentation: str):
         """Save processed relationship documentation."""
         with sqlite3.connect(self.db_path) as conn:
             conn.execute("""
                 UPDATE relationship_metadata
-                SET relationship_type = ?, documentation = ?, 
+                SET relationship_type = ?, documentation = ?,
                     processed_at = ?, status = 'completed'
-                WHERE id = ?
-            """, (relationship_type, documentation, datetime.now(), relationship_id))
+                WHERE constrained_table || '_' || referred_table = ?
+            """, (relationship_type, documentation, datetime.now(), str(relationship_id)))
             logger.info(f"Saved documentation for relationship: {relationship_id}")
     
     def get_pending_tables(self) -> List[str]:

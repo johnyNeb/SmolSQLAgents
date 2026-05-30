@@ -55,9 +55,19 @@ const DocumentationPage = () => {
       }
 
       // Combine and organize data
+      // const organizedData = {
+      //   tables: [...summaries.filter(item => item.type === 'table'), ...tables],
+      //   relationships: [...summaries.filter(item => item.type === 'relationship'), ...relationships],
+      //   summaries: summaries
+      // };
+
       const organizedData = {
-        tables: [...summaries.filter(item => item.type === 'table'), ...tables],
-        relationships: [...summaries.filter(item => item.type === 'relationship'), ...relationships],
+        tables: summaries.filter(item => item.type === 'table').length > 0 
+            ? summaries.filter(item => item.type === 'table')
+            : tables,
+        relationships: summaries.filter(item => item.type === 'relationship').length > 0
+            ? summaries.filter(item => item.type === 'relationship')
+            : relationships,
         summaries: summaries
       };
 
@@ -520,8 +530,8 @@ const DocumentationPage = () => {
                       {selectedItem.processed_at && (
                         <li><strong>Processed:</strong> {new Date(selectedItem.processed_at).toLocaleString()}</li>
                       )}
-                      {selectedItem.column_count && (
-                        <li><strong>Columns:</strong> {selectedItem.column_count}</li>
+                      {(selectedItem.schema_data?.columns || selectedItem.columns) && (
+                        <li><strong>Columns:</strong> {(selectedItem.schema_data?.columns || selectedItem.columns)?.length}</li>
                       )}
                       {selectedItem.relationship_type && (
                         <li><strong>Relationship Type:</strong> {selectedItem.relationship_type}</li>
