@@ -206,11 +206,14 @@ class AgentFactory:
 
             for i, table_name in enumerate(tables):
                 try:
-                        # Skip if already indexed in ChromaDB
-                        existing = main_agent.indexer_agent.vector_store.search_tables(table_name)
-                        if existing and len(existing) > 0:
-                            print(f"⏭️ Skipping {table_name} (already indexed)", flush=True)
-                            continue
+                        # Skip if already indexed in ChromaDB - direct ID lookup, no embedding call
+                        try:
+                            existing = main_agent.indexer_agent.vector_store.table_index.collection.get(ids=[table_name])
+                            if existing and existing['ids']:
+                                print(f"⏭️ Skipping {table_name} (already indexed)", flush=True)
+                                continue
+                        except Exception:
+                            pass
                             
                         print(f"Processing table {i+1}/{len(tables)}: {table_name}", flush=True)
                         main_agent.process_table_documentation(table_name)
@@ -224,6 +227,14 @@ class AgentFactory:
 
             for relationship in relationships:
                 try:
+                    rel_id = f"{relationship.get('constrained_table')}_{relationship.get('referred_table')}"
+                    try:
+                        existing = main_agent.indexer_agent.vector_store.relationship_index.collection.get(ids=[rel_id])
+                        if existing and existing['ids']:
+                            print(f"⏭️ Skipping relationship {rel_id} (already indexed)", flush=True)
+                            continue
+                    except Exception:
+                        pass
                     main_agent.process_relationship_documentation(relationship)
                 except Exception as e:
                     logger.error(f"Failed processing relationship: {e}")
