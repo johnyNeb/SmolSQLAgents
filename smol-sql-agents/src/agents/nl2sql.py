@@ -171,6 +171,8 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         - get_all_tables_unified_tool() — returns a dict, use result["tables"] to get the list
         - get_table_schema_unified_tool("table_name") — returns columns for a specific table
 
+        Because the second tool is very slow, call it only if columns are explicitly part of the question
+
         Based on what you find, call final_answer("your plain English answer here").
 
         Example answer format:
@@ -196,18 +198,53 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
     
         # Route discovery queries to CodeAgent
         route = self._route_query(user_query)
+
         if route == "agent":
-                    print(f"🔍 Routing to CodeAgent for discovery query", flush=True)
-                    prompt = self._build_discovery_prompt(user_query, entity_context)
-                    response = self.agent.run(prompt)
-                    answer = self._extract_discovery_answer(response)
-                    return {
-                        "success": True,
-                        "generated_sql": "",
-                        "answer": answer,
-                        "is_discovery": True,
-                        "query_execution": {"success": True, "total_rows": 0}
-                    }
+            print(f"🔍 Routing to agent for discovery query", flush=True)
+            prompt = self._build_discovery_prompt(user_query, entity_context)
+            
+            def run_agent():
+                response = self.agent.run(prompt)
+                return self._extract_discovery_answer(response)
+            
+            agent_answer = None
+            try:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(run_agent)
+                    agent_answer = future.result(timeout=60)
+                    print(f"✅ Agent answered discovery query", flush=True)
+            except concurrent.futures.TimeoutError:
+                if future.done():
+                    try:
+                        agent_answer = future.result()
+                        print(f"✅ Agent answered (just after timeout)", flush=True)
+                    except:
+                        pass
+                if not agent_answer:
+                    print(f"⏱️ Agent timed out, falling back to Groq", flush=True)
+            except Exception as e:
+                print(f"❌ Agent failed: {e}, falling back to Groq", flush=True)
+            
+            if not agent_answer:
+                import openai
+                client = openai.OpenAI(
+                    api_key=os.getenv("OPENAI_API_KEY"),
+                    base_url=os.getenv("OPENAI_API_BASE")
+                )
+                response = client.chat.completions.create(
+                    model=os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile"),
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=500
+                )
+                agent_answer = response.choices[0].message.content.strip()
+            
+            return {
+                "success": True,
+                "generated_sql": "",
+                "answer": agent_answer,
+                "is_discovery": True,
+                "query_execution": {"success": True, "total_rows": 0}
+            }
     
         print(f"⚡ Routing to direct Groq call for SQL query", flush=True)
         logger.info(f"Starting direct SQL generation for: {user_query}")

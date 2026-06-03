@@ -293,7 +293,9 @@ function App() {
         if (sqlGeneration) {
           setSqlValidation({
             ...sqlGeneration.validation,
-            is_valid: sqlGeneration.is_valid,
+            is_valid: sqlGeneration.is_discovery ? true : sqlGeneration.is_valid,
+            is_discovery: sqlGeneration.is_discovery || false,
+            answer: sqlGeneration.answer || null,
             query_execution: sqlGeneration.query_execution
           });
           setOptimizationSuggestions(sqlGeneration.optimization_suggestions || []);

@@ -179,6 +179,8 @@ class SQLAgentPipeline(BaseAgent):
             "sql_generation": {
                 "generated_sql": sql_results.get("generated_sql"),
                 "is_valid": sql_results.get("is_valid", False),
+                "is_discovery": sql_results.get("is_discovery", False),
+                "answer": sql_results.get("answer", None),
                 "validation": sql_results.get("validation", {}),
                 "query_execution": sql_results.get("query_execution", {})
             }
