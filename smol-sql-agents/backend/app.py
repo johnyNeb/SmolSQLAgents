@@ -70,6 +70,9 @@ class ApiRoutes:
         self.api_bp.add_url_rule('/schema', view_func=self.get_schema)
         self.api_bp.add_url_rule('/debug/objects', view_func=self.debug_objects)
         self.api_bp.add_url_rule('/debug/database', view_func=self.debug_database)
+
+        # Feedback endpoints
+        self.api_bp.add_url_rule('/feedback', view_func=self.submit_feedback, methods=['POST'])
         
         # Documentation endpoints
         self.api_bp.add_url_rule('/documentation/summaries', view_func=self.get_all_summaries)
@@ -218,6 +221,46 @@ class ApiRoutes:
                 "success": False,
                 "error": str(e)
             }), 500
+
+    def submit_feedback(self):
+            """Save user feedback on a generated SQL query."""
+            try:
+                import sqlite3 as _sqlite3
+                data = request.get_json()
+                if not data:
+                    return jsonify({"success": False, "error": "No data provided"}), 400
+
+                query = data.get("query", "")
+                generated_sql = data.get("generated_sql", "")
+                correct = data.get("correct", True)
+                comment = data.get("comment", "")
+
+                if not query or not generated_sql:
+                    return jsonify({"success": False, "error": "Query and SQL are required"}), 400
+
+                store = self.get_documentation_store()
+                store.save_feedback(query, generated_sql, correct, comment)
+
+                # If positive feedback, also store embedding
+                if correct:
+                    try:
+                        agent_manager = self.get_agent_manager()
+                        if agent_manager:
+                            feedback_store = agent_manager.get_feedback_store()
+                            with _sqlite3.connect(store.db_path) as conn:
+                                row_id = conn.execute(
+                                    "SELECT MAX(id) FROM query_feedback"
+                                ).fetchone()[0]
+                            feedback_store.add_feedback(query, generated_sql, row_id)
+                    except Exception as e:
+                        logger.warning(f"Embedding storage failed (feedback still saved): {e}")
+
+                return jsonify({"success": True, "message": "Feedback saved"})
+
+            except Exception as e:
+                logger.error(f"Feedback submission failed: {e}")
+                return jsonify({"success": False, "error": str(e)}), 500
+
 
     def recognize_entities(self):
         """Recognize applicable database entities for a user query, with verbose logging and execution time tracking."""

@@ -646,7 +646,8 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             business_context_str = "Business context:\n"
             for instruction in business_instructions[:3]:
                 business_context_str += f"- {instruction.get('instructions', '')}\n"
-        
+
+        feedback_examples = self._get_feedback_examples(user_query)
         return f"""
             Generate Oracle SQL for the following request: {user_query}
             
@@ -654,6 +655,8 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             {schema_info}
             
             {business_context_str}
+
+            {feedback_examples}
             
             Return ONLY the SQL query, nothing else. No explanation, no markdown, no final_answer() wrapper.
             
@@ -778,6 +781,22 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         except Exception as e:
             logger.error(f"Business compliance check failed: {e}")
             return {"valid": True, "error": str(e)}
+
+    def _get_feedback_examples(self, user_query: str) -> str:
+        """Search feedback store for similar verified queries."""
+        if not hasattr(self, 'feedback_store') or not self.feedback_store:
+            return ""
+        try:
+            similar = self.feedback_store.find_similar(user_query, n_results=3)
+            if not similar:
+                return ""
+            examples = "Verified examples from past queries:\n"
+            for ex in similar:
+                examples += f'Q: "{ex["query"]}"\nSQL: {ex["sql"]}\n\n'
+            return examples
+        except Exception as e:
+            logger.error(f"Failed to get feedback examples: {e}")
+            return ""        
 
     def _check_business_compliance2(self, query: str, business_context: Dict) -> Dict:
         """Check business compliance of query."""

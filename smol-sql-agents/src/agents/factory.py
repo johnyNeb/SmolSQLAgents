@@ -115,20 +115,36 @@ class AgentFactory:
         
         return self._instances["business_agent"]
     
-    def get_nl2sql_agent(self, database_tools=None) -> NL2SQLAgent:
-        """Get or create NL2SQL agent."""
-        if "nl2sql_agent" not in self._instances:
-            # Use unified database tools if no specific tools provided
-            if database_tools is None:
-                database_tools = self.get_unified_database_tools()
+    # def get_nl2sql_agent(self, database_tools=None) -> NL2SQLAgent:
+    #     """Get or create NL2SQL agent."""
+    #     if "nl2sql_agent" not in self._instances:
+    #         # Use unified database tools if no specific tools provided
+    #         if database_tools is None:
+    #             database_tools = self.get_unified_database_tools()
             
-            self._instances["nl2sql_agent"] = NL2SQLAgent(
-                database_tools,
-                shared_llm_model=self.get_shared_llm_model()
-            )
-            logger.info("NL2SQL agent created")
+    #         self._instances["nl2sql_agent"] = NL2SQLAgent(
+    #             database_tools,
+    #             shared_llm_model=self.get_shared_llm_model()
+    #         )
+    #         logger.info("NL2SQL agent created")
         
-        return self._instances["nl2sql_agent"]
+    #     return self._instances["nl2sql_agent"]
+    def get_nl2sql_agent(self, database_tools=None) -> NL2SQLAgent:
+            """Get or create NL2SQL agent."""
+            if "nl2sql_agent" not in self._instances:
+                # Use unified database tools if no specific tools provided
+                if database_tools is None:
+                    database_tools = self.get_unified_database_tools()
+                
+                nl2sql = NL2SQLAgent(
+                    database_tools,
+                    shared_llm_model=self.get_shared_llm_model()
+                )
+                nl2sql.feedback_store = self.get_feedback_store()
+                self._instances["nl2sql_agent"] = nl2sql
+                logger.info("NL2SQL agent created")
+            
+            return self._instances["nl2sql_agent"]    
     
     def get_batch_manager(self) -> BatchIndexingManager:
         """Get or create batch manager."""
@@ -172,6 +188,17 @@ class AgentFactory:
         
         return self._shared_components[component_name]
     
+    def get_feedback_store(self):
+        """Get or create feedback vector store."""
+        if "feedback_store" not in self._instances:
+            from .feedback_store import FeedbackVectorStore
+            self._instances["feedback_store"] = FeedbackVectorStore(
+                self.get_indexer_agent().vector_store
+            )
+            logger.info("Feedback store initialized")
+        return self._instances["feedback_store"]
+
+
     def get_all_agents(self) -> Dict[str, Any]:
         """Get all agent instances."""
         return {

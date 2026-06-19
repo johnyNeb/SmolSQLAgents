@@ -113,6 +113,38 @@ class DocumentationStore:
             logger.info(f"Started generation session {session_id} with {len(tables)} tables and {len(relationships)} relationships")
             return session_id
     
+    def save_feedback(self, query: str, generated_sql: str, correct: bool, comment: str = "") -> bool:
+        """Save user feedback for a query."""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS query_feedback (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    query TEXT NOT NULL,
+                    generated_sql TEXT NOT NULL,
+                    correct INTEGER NOT NULL,
+                    comment TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+            conn.execute("""
+                INSERT INTO query_feedback (query, generated_sql, correct, comment)
+                VALUES (?, ?, ?, ?)
+            """, (query, generated_sql, 1 if correct else 0, comment))
+            logger.info(f"Saved feedback for query: {query[:50]}...")
+            return True
+
+
+    def get_positive_feedback(self, limit: int = 50) -> list:
+        """Get all positively rated query/SQL pairs."""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.execute("""
+                SELECT query, generated_sql FROM query_feedback
+                WHERE correct = 1
+                ORDER BY created_at DESC
+                LIMIT ?
+            """, (limit,))
+            return [{"query": row[0], "sql": row[1]} for row in cursor.fetchall()]
+
     def save_table_documentation(self, table_name: str, schema_data: Dict, 
                                 business_purpose: str, documentation: str):
         """Save processed table documentation."""
