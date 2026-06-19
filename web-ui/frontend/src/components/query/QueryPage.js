@@ -50,6 +50,7 @@ const QueryPage = ({
         sqlValidation={sqlValidation}
         generatedSql={generatedSql}
         copySqlToClipboard={copySqlToClipboard}
+        query={query}
       />
 
       {/* Query Results */}
