@@ -1,0 +1,22 @@
+{
+  "score": "1/1",
+  "pct": 100,
+  "avg_time": 30.2,
+  "results": [
+    {
+      "id": 1,
+      "query": "how many addresses have 'Actual' status",
+      "type": "sql",
+      "passed": true,
+      "issues": [],
+      "sql_generated": "SELECT COUNT(DISTINCT entity_identity) FROM address WHERE status = 'Actual'",
+      "entities_found": [
+        "address",
+        "dup_addresses",
+        "address_restore"
+      ],
+      "result_value": 10690124,
+      "elapsed": 30.2
+    }
+  ]
+}
