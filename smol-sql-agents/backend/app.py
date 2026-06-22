@@ -251,7 +251,7 @@ class ApiRoutes:
                                 row_id = conn.execute(
                                     "SELECT MAX(id) FROM query_feedback"
                                 ).fetchone()[0]
-                            feedback_store.add_feedback(query, generated_sql, row_id)
+                            result = feedback_store.add_feedback(query, generated_sql, row_id)
                     except Exception as e:
                         logger.warning(f"Embedding storage failed (feedback still saved): {e}")
 

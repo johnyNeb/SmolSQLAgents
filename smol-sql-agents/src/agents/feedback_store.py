@@ -1,3 +1,4 @@
+import chromadb
 import logging
 from typing import List, Dict
 
@@ -13,21 +14,25 @@ class FeedbackVectorStore:
     
     def _init_collection(self):
         try:
-            self.collection = self.vector_store.client.get_or_create_collection(
+            # Use the same ChromaDB client as the table index
+            chroma_client = chromadb.PersistentClient(
+                path=self.vector_store.base_path
+            )
+            self.collection = chroma_client.get_or_create_collection(
                 name="query_feedback",
                 metadata={"description": "Verified query/SQL pairs from user feedback"}
             )
             logger.info(f"Feedback collection ready: {self.collection.count()} entries")
         except Exception as e:
             logger.error(f"Failed to init feedback collection: {e}")
-            self.collection = None
+            self.collection = None    
     
     def add_feedback(self, query: str, sql: str, feedback_id: int):
         """Store a positively rated query/SQL pair with its embedding."""
         if not self.collection:
             return False
         try:
-            embedding = self.vector_store.embeddings_client.embed(query)
+            embedding = self.vector_store.embeddings_client.generate_embedding(query)
             self.collection.upsert(
                 ids=[str(feedback_id)],
                 embeddings=[embedding],
@@ -45,7 +50,7 @@ class FeedbackVectorStore:
         if not self.collection or self.collection.count() == 0:
             return []
         try:
-            embedding = self.vector_store.embeddings_client.embed(query)
+            embedding = self.vector_store.embeddings_client.generate_embedding(query)
             results = self.collection.query(
                 query_embeddings=[embedding],
                 n_results=min(n_results, self.collection.count()),

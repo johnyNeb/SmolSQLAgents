@@ -83,7 +83,7 @@ const SQLGeneration = ({ sqlValidation, generatedSql, copySqlToClipboard, query 
                   className={`btn btn-sm ${feedback === 'down' ? 'btn-danger' : 'btn-outline-danger'}`}
                   onClick={() => submitFeedback(false)}
                 >
-                  <i className="bi bi-hand-thumbs-up"></i>
+                  <i className="bi bi-hand-thumbs-down"></i>
                 </button>
               </>
             )}

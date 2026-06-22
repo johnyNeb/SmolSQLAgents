@@ -783,7 +783,6 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             return {"valid": True, "error": str(e)}
 
     def _get_feedback_examples(self, user_query: str) -> str:
-        """Search feedback store for similar verified queries."""
         if not hasattr(self, 'feedback_store') or not self.feedback_store:
             return ""
         try:
@@ -796,7 +795,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             return examples
         except Exception as e:
             logger.error(f"Failed to get feedback examples: {e}")
-            return ""        
+            return ""       
 
     def _check_business_compliance2(self, query: str, business_context: Dict) -> Dict:
         """Check business compliance of query."""
