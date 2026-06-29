@@ -288,7 +288,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                         print(f"✅ Success with {model_name}", flush=True)
                         
                         # Option A: ask versatile to judge if instant was used
-                        if model_name == os.getenv("GROQ_MODEL_FAST", "llama-3.1-8b-instant"):
+                        if model_name == os.getenv("GROQ_MODEL_FAST", "openai/gpt-oss-20b"):
                             judged = self._judge_and_maybe_fix(
                                 user_query,
                                 generated_sql,
@@ -311,7 +311,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                         print(f"⚠️ {model_name} SQL failed: {error}", flush=True)
                         
                         # Retry with versatile if fast model failed
-                        if model_name == os.getenv("GROQ_MODEL_FAST", "llama-3.1-8b-instant"):
+                        if model_name == os.getenv("GROQ_MODEL_FAST", "openai/gpt-oss-20b"):
                             continue  # will try next model in loop
                             
                 except Exception as e:
@@ -894,7 +894,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
     def _choose_model_order(self, user_query: str):
         """Decide model order based on query complexity."""
         
-        fast = os.getenv("GROQ_MODEL_FAST", "llama-3.1-8b-instant")
+        fast = os.getenv("GROQ_MODEL_FAST", "openai/gpt-oss-20b")
         slow = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
 
         query_lower = user_query.lower()
