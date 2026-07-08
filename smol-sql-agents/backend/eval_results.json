@@ -1,7 +1,7 @@
 {
-  "score": "1/1",
+  "score": "2/2",
   "pct": 100,
-  "avg_time": 30.2,
+  "avg_time": 33.56,
   "results": [
     {
       "id": 1,
@@ -9,14 +9,31 @@
       "type": "sql",
       "passed": true,
       "issues": [],
-      "sql_generated": "SELECT COUNT(DISTINCT entity_identity) FROM address WHERE status = 'Actual'",
+      "sql_generated": "SELECT COUNT(*) FROM address WHERE status = 'Actual'",
       "entities_found": [
         "address",
         "dup_addresses",
         "address_restore"
       ],
       "result_value": 10690124,
-      "elapsed": 30.2
+      "elapsed": 38.81
+    },
+    {
+      "id": 12,
+      "query": "count addresses that are located in Amsterdam or Rotterdam or Utrecht or Eindhoven cities",
+      "type": "sql",
+      "passed": true,
+      "issues": [],
+      "sql_generated": "SELECT COUNT(*) FROM address WHERE city_name IN ('Amsterdam','Rotterdam','Utrecht','Eindhoven')",
+      "entities_found": [
+        "address",
+        "del_addresses_sa",
+        "dup_addresses",
+        "address_restore",
+        "address_pre30"
+      ],
+      "result_value": 2414065,
+      "elapsed": 28.31
     }
   ]
 }

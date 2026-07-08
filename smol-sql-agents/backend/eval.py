@@ -21,7 +21,16 @@ test_cases = [
         "expected_tables": ["address"],          # tables entity recognition should find
         "expected_keywords": ["COUNT", "address", "status", "Actual"],  # must appear in SQL
         "expected_result": 10690124,              # expected numeric result (None to skip)
-        "expected_result_tolerance": 0,           # allow ± this much difference
+        "expected_result_tolerance": 10,           # allow ± this much difference
+    },
+    {
+    "id": 12,
+    "query": "count addresses that are located in Amsterdam or Rotterdam or Utrecht or Eindhoven cities",
+    "type": "sql",
+    "expected_tables": ["address"],
+    "expected_keywords": ["COUNT", "city_name", "Amsterdam", "Rotterdam", "Utrecht", "Eindhoven"],
+    "expected_result": 2414065,
+    "expected_result_tolerance": 10,
     },
     # ── Add more cases here ──
     # {

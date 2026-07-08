@@ -165,7 +165,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
 
         Semantic search identified these tables as potentially relevant: {entity_list}
 
-        Your job is to answer the question in plain English. Do NOT generate SQL.
+        Your job is to answer the question in plain English.
 
         You can use these tools to investigate:
         - get_all_tables_unified_tool() — returns a dict, use result["tables"] to get the list
@@ -199,49 +199,71 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         # Route discovery queries to CodeAgent
         route = self._route_query(user_query)
 
+        # if route == "agent":
+        #     print(f"🔍 Routing to agent for discovery query", flush=True)
+        #     prompt = self._build_discovery_prompt(user_query, entity_context)
+            
+        #     def run_agent():
+        #         response = self.agent.run(prompt)
+        #         return self._extract_discovery_answer(response)
+            
+        #     agent_answer = None
+        #     try:
+        #         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+        #             future = executor.submit(run_agent)
+        #             agent_answer = future.result(timeout=60)
+        #             print(f"✅ Agent answered discovery query", flush=True)
+        #     except concurrent.futures.TimeoutError:
+        #         if future.done():
+        #             try:
+        #                 agent_answer = future.result()
+        #                 print(f"✅ Agent answered (just after timeout)", flush=True)
+        #             except:
+        #                 pass
+        #         if not agent_answer:
+        #             print(f"⏱️ Agent timed out, falling back to Groq", flush=True)
+        #     except Exception as e:
+        #         print(f"❌ Agent failed: {e}, falling back to Groq", flush=True)
+            
+        #     if not agent_answer:
+        #         import openai
+        #         client = openai.OpenAI(
+        #             api_key=os.getenv("OPENAI_API_KEY"),
+        #             base_url=os.getenv("OPENAI_API_BASE")
+        #         )
+        #         response = client.chat.completions.create(
+        #             model=os.getenv("GROQ_MODEL_SLOW", "openai/gpt-oss-120b"),
+        #             messages=[{"role": "user", "content": prompt}],
+        #             max_tokens=500,
+        #             tool_choice="none"
+        #         )
+        #         agent_answer = response.choices[0].message.content.strip()
+            
+        #     return {
+        #         "success": True,
+        #         "generated_sql": "",
+        #         "answer": agent_answer,
+        #         "is_discovery": True,
+        #         "query_execution": {"success": True, "total_rows": 0}
+        #     }
         if route == "agent":
-            print(f"🔍 Routing to agent for discovery query", flush=True)
-            prompt = self._build_discovery_prompt(user_query, entity_context)
-            
-            def run_agent():
-                response = self.agent.run(prompt)
-                return self._extract_discovery_answer(response)
-            
-            agent_answer = None
-            try:
-                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                    future = executor.submit(run_agent)
-                    agent_answer = future.result(timeout=60)
-                    print(f"✅ Agent answered discovery query", flush=True)
-            except concurrent.futures.TimeoutError:
-                if future.done():
-                    try:
-                        agent_answer = future.result()
-                        print(f"✅ Agent answered (just after timeout)", flush=True)
-                    except:
-                        pass
-                if not agent_answer:
-                    print(f"⏱️ Agent timed out, falling back to Groq", flush=True)
-            except Exception as e:
-                print(f"❌ Agent failed: {e}, falling back to Groq", flush=True)
-            
-            if not agent_answer:
-                import openai
-                client = openai.OpenAI(
-                    api_key=os.getenv("OPENAI_API_KEY"),
-                    base_url=os.getenv("OPENAI_API_BASE")
-                )
-                response = client.chat.completions.create(
-                    model=os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile"),
-                    messages=[{"role": "user", "content": prompt}],
-                    max_tokens=500
-                )
-                agent_answer = response.choices[0].message.content.strip()
-            
+            print(f"🔍 Routing to direct Groq for discovery query", flush=True)
+            import openai
+            client = openai.OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY"),
+                base_url=os.getenv("OPENAI_API_BASE")
+            )
+            prompt = self._build_discovery_prompt(user_query, entity_context)  #model=os.getenv("GROQ_MODEL_FAST", "openai/gpt-oss-20b"),
+            response = client.chat.completions.create(
+                model="qwen/qwen3.6-27b",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=500
+            )
+            answer = response.choices[0].message.content.strip()
             return {
                 "success": True,
                 "generated_sql": "",
-                "answer": agent_answer,
+                "answer": answer,
                 "is_discovery": True,
                 "query_execution": {"success": True, "total_rows": 0}
             }
@@ -267,7 +289,8 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                     response = client.chat.completions.create(
                         model=model_name,
                         messages=[{"role": "user", "content": prompt}],
-                        max_tokens=500
+                        max_tokens=500,
+                        tool_choice="none"
                     )
                     
                     generated_sql = response.choices[0].message.content.strip()
@@ -398,7 +421,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
                     # ✅ retry fix (only for fast model)
                     # ✅ retry with better model, up to 3 attempts
                     if "8b" in model_name:
-                            slow_model = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
+                            slow_model = os.getenv("GROQ_MODEL_SLOW", "openai/gpt-oss-120b")
                             for retry_attempt in range(3):
                                 print(f"🔄 Retry {retry_attempt + 1}/3 with {slow_model}", flush=True)
                                 retry_result = self._retry_sql_fix(
@@ -895,7 +918,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         """Decide model order based on query complexity."""
         
         fast = os.getenv("GROQ_MODEL_FAST", "openai/gpt-oss-20b")
-        slow = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
+        slow = os.getenv("GROQ_MODEL_SLOW", "openai/gpt-oss-120b")
 
         query_lower = user_query.lower()
 
@@ -975,7 +998,7 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
         """Ask versatile to judge if instant's SQL actually answers the question."""
         import openai
         
-        slow = os.getenv("GROQ_MODEL_SLOW", "llama-3.3-70b-versatile")
+        slow = os.getenv("GROQ_MODEL_SLOW", "openai/gpt-oss-120b")
         
         sample = execution_result.get("sample_data", {}).get("sample_rows", [])
         sample_str = str(sample[:3]) if sample else "no rows returned"
@@ -1004,7 +1027,8 @@ class NL2SQLAgent(BaseAgent, CachingMixin, ValidationMixin):
             response = client.chat.completions.create(
                 model=slow,
                 messages=[{"role": "user", "content": judge_prompt}],
-                max_tokens=300
+                max_tokens=300,
+                tool_choice="none"
             )
             
             verdict = response.choices[0].message.content.strip()
